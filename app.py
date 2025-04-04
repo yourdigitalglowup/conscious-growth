@@ -6,15 +6,7 @@ import pandas as pd
 import plotly.express as px
 import random
 
-# Konfigurera sidan
-st.set_page_config(
-    page_title="Lindas Conscious Growth AI",
-    page_icon="💖",
-    layout="centered",
-    initial_sidebar_state="collapsed"
-)
-
-# Sätt sidans favicon och titel
+# OBS: st.set_page_config måste vara det FÖRSTA Streamlit-kommandot i din app
 st.set_page_config(
     page_title="Lindas Conscious Growth AI",
     page_icon="💖",
@@ -463,7 +455,28 @@ def main():
                 pep_talk = generate_pep_talk(feeling, energy_phase)
                 cycle_question = generate_cycle_question(energy_phase)
                 
-                # Spara i session state för att visa på nästa skärm
+                # Spara utan reflektion
+                if st.button("Fortsätt utan reflektion", use_container_width=True):
+                    save_log(st.session_state.feeling, st.session_state.energy_phase, 
+                            st.session_state.microaction, st.session_state.pep_talk, 
+                            st.session_state.cycle_question)
+                    
+                    st.success("📖 Din incheckning har sparats!")
+            
+            # Visa firande om det finns
+            if hasattr(st.session_state, 'celebration') and st.session_state.celebration:
+                st.markdown('<div class="celebration-box">', unsafe_allow_html=True)
+                st.markdown(f"### {st.session_state.celebration['message']}")
+                st.markdown("#### ✨ Dagens affirmation för dig:")
+                st.markdown(f"*{st.session_state.celebration['affirmation']}*")
+                st.markdown(f"#### {st.session_state.celebration['challenge']}")
+                st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Knapp för att starta en ny incheckning
+            if st.button("Starta en ny incheckning", use_container_width=True):
+                # Återställ tillstånd
+                st.session_state.incheckning_klar = False
+                st.rerun()ara i session state för att visa på nästa skärm
                 st.session_state.feeling = feeling
                 st.session_state.energy_phase = energy_phase
                 st.session_state.microaction = microaction
@@ -519,25 +532,4 @@ def main():
                     
                     st.success("✨ Tack för din vackra reflektion, Linda! Den är nu sparad i din livspuls-logg. ✨")
             else:
-                # Spara utan reflektion
-                if st.button("Fortsätt utan reflektion", use_container_width=True):
-                    save_log(st.session_state.feeling, st.session_state.energy_phase, 
-                            st.session_state.microaction, st.session_state.pep_talk, 
-                            st.session_state.cycle_question)
-                    
-                    st.success("📖 Din incheckning har sparats!")
-            
-            # Visa firande om det finns
-            if hasattr(st.session_state, 'celebration') and st.session_state.celebration:
-                st.markdown('<div class="celebration-box">', unsafe_allow_html=True)
-                st.markdown(f"### {st.session_state.celebration['message']}")
-                st.markdown("#### ✨ Dagens affirmation för dig:")
-                st.markdown(f"*{st.session_state.celebration['affirmation']}*")
-                st.markdown(f"#### {st.session_state.celebration['challenge']}")
-                st.markdown('</div>', unsafe_allow_html=True)
-            
-            # Knapp för att starta en ny incheckning
-            if st.button("Starta en ny incheckning", use_container_width=True):
-                # Återställ tillstånd
-                st.session_state.incheckning_klar = False
-                st.rerun()
+                # Sp
