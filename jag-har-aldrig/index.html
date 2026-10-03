@@ -43,6 +43,7 @@
   --c-pink: #FF6AA8;
   --c-red: #F25A60;
   --c-plum: #7B3D92;
+  --c-wine: #A3203F;
   --c-night: #251E3B;
   --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
   --font-body: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -220,6 +221,7 @@ button:disabled { cursor: default; }
 .deck.on .deck-check { background: var(--dfg); border-color: transparent; color: var(--dc); }
 .deck.on .deck-check svg { opacity: 1; }
 .deck.night.on { box-shadow: inset 0 0 0 2px var(--c-pink); }
+.deck.night { grid-column: 1 / -1; min-height: 104px; }
 
 .heat { display: inline-flex; gap: 3px; align-items: flex-end; }
 .heat i { width: 5px; border-radius: 2px; background: currentColor; opacity: .25; }
@@ -673,6 +675,19 @@ const DECKS = [
     'sagt fel namn till den jag dejtade', 'skrivit och raderat samma sms i en timme',
     'blivit tillsammans med någon jag träffat på en app', 'varit på en dejt så tyst att jag hörde min egen puls'
   ]},
+  { id: 'pirr', name: 'Pirr', blurb: 'Flört, hångel och allt som får kinderna att hetta.', heat: 2, color: 'var(--c-wine)', fg: 'var(--on-dark)', cards: [
+    'flörtat mig till en gratis drink', 'kysst någon som jag träffat samma kväll', 'haft en sexdröm om någon jag känner',
+    'skickat en utmanande selfie', 'hånglat så länge offentligt att någon sa till oss', 'haft en crush på en kompis förälder',
+    'flörtat med någon bara för att få något', 'köpt underkläder för att imponera på någon', 'sovit naken',
+    'blivit uppraggad i mataffären', 'raggat med en riktigt usel raggningsreplik', 'dansat tryckare med en främling',
+    'kysst två olika personer samma kväll', 'legat sked med någon som bara var en kompis', 'varit kär i två personer samtidigt',
+    'flörtat med en bartender för att slippa kön', 'blivit kär i någons röst', 'fått gåshud av en enda beröring',
+    'skickat ett flörtigt sms till fel person', 'blivit påkommen med att stirra på någons rumpa', 'gett någon en lapdance',
+    'haft en hemlig flört på jobbet', 'hånglat i en hiss', 'fått dölja ett sugmärke med en halsduk',
+    'spelat strippoker', 'snurrat flaskan som vuxen', 'flörtat med någon framför min partner',
+    'blivit kysst så bra att jag glömde var jag var', 'kollat in någon i det här rummet i kväll',
+    'tagit av mig ett klädesplagg för att vinna en lek', 'gjort en striptease för någon', 'kysst någons hals tills de tappade tråden'
+  ]},
   { id: 'hemligt', name: 'Hemligheter', blurb: 'Erkännanden som kräver mod. Och kanske ett glas till.', heat: 2, color: 'var(--c-plum)', fg: 'var(--on-dark)', cards: [
     'läst någon annans dagbok', 'snokat i någons mobil', 'snattat', 'hittat på en död släkting för att slippa något',
     'gett bort en present jag själv fått', 'sagt att jag älskade en present som jag hatade',
@@ -696,7 +711,16 @@ const DECKS = [
     'skämts över min egen sökhistorik', 'vaknat bredvid någon och ångrat mig direkt', 'haft sex i en bil',
     'sextat med fel person', 'blivit kär i ett one night stand', 'testat rollspel i sängen', 'varit på en strippklubb',
     'legat med någon i det här rummet', 'haft sex på en fest medan festen pågick',
-    'tappat ett klädesplagg och aldrig hittat det igen', 'haft sex mer än tre gånger på en dag'
+    'tappat ett klädesplagg och aldrig hittat det igen', 'haft sex mer än tre gånger på en dag',
+    'haft sex på en strand', 'haft sex i ett tält', 'haft sex i en bastu', 'haft sex på midsommarnatten',
+    'haft sex i en sommarstuga med alldeles för tunna väggar', 'haft sex i en tvättstuga', 'haft sex på en skidresa',
+    'haft sex i duschen och halkat', 'haft sex så högljutt att grannarna klagade', 'blivit påkommen av mina föräldrar',
+    'haft sex med en främling', 'haft sex framför en spegel', 'filmat oss i sängen', 'använt sexleksaker med en partner',
+    'fått en sexleksak levererad till jobbet', 'blivit bunden i sängen', 'legat med en barndomsvän', 'legat med en kompis ex',
+    'legat med en kompis syskon', 'legat med två olika personer samma helg', 'haft sex på en toalett på krogen',
+    'haft sex med andra som sov i samma rum', 'haft sex över videosamtal', 'legat med någon för att göra någon annan svartsjuk',
+    'varit på en sexklubb eller swingersfest', 'skickat ett snuskigt röstmeddelande', 'läst högt ur en erotisk bok för någon',
+    'bokat ett hotellrum bara för sex', 'drömt något snuskigt om någon i det här rummet', 'gått ut utan underkläder'
   ]}
 ];
 
@@ -710,7 +734,13 @@ const RULES = [
   { title: 'Två sanningar, en lögn', text: 'Den som klarat sig bäst berättar tre saker om sig själv. Rätt gissning på lögnen och hen {straff}. Fel gissning och alla andra {straff}.', tap: true },
   { title: 'Snabbrunda', text: 'Gå laget runt. Alla säger ett eget ”jag har aldrig”. Den som tvekar mer än tre sekunder {straff}.', tap: true },
   { title: 'Ärlighetspriset', text: 'Utse den som varit ärligast hittills. Hen väljer någon som {straff}.', tap: true },
-  { title: 'Ögonkontakt', text: 'Alla tittar ner. På tre tittar alla upp på någon. Två som möter varandras blickar {straff} var.', tap: true }
+  { title: 'Ögonkontakt', text: 'Alla tittar ner. På tre tittar alla upp på någon. Två som möter varandras blickar {straff} var.', tap: true },
+  // heat 3: kommer bara med när Vågat 18+ är vald
+  { title: 'Viskleken', heat: 3, text: 'Viska din största turn-on till personen till vänster. Var den för tam får hen döma att du {straff}.', tap: true },
+  { title: 'Heta stolen', heat: 3, text: 'Den med flest fingrar kvar sätter sig i heta stolen. Alla får ställa en fråga om sex eller dejting. Den som inte svarar {straff}.', tap: true },
+  { title: 'Rodnaden', heat: 3, text: 'Alla säger var på kroppen de helst blir kyssta. Den som rodnar först {straff}.', tap: true },
+  { title: 'Kyss, gift, dumpa', heat: 3, text: 'Den som ligger sämst till väljer tre kändisar. Alla andra kör kyss, gift, dumpa. Den som tvekar {straff}.', tap: true },
+  { title: 'Raggningsrepliken', heat: 3, text: 'Alla levererar sin bästa raggningsreplik till personen till höger. Den som levererar den sämsta enligt gruppen {straff}.', tap: true }
 ];
 
 const CUSTOM_DECK = { id: 'egna', name: 'Era egna', heat: 0, color: 'var(--paper)', fg: 'var(--on-color)' };
@@ -735,13 +765,20 @@ const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 
 function defaults() {
-  return { players: [], nextId: 1, mode: 'fingers', fingers: 5, twists: true, decks: DECKS.filter(d => d.heat <= 2).map(d => d.id), custom: [] };
+  return { players: [], nextId: 1, mode: 'fingers', fingers: 5, twists: true, decks: DECKS.filter(d => d.heat <= 2).map(d => d.id), custom: [], known: DECKS.map(d => d.id) };
 }
+// Kortlekarna som fanns innan inställningarna började minnas vilka lekar de sett
+const FIRST_DECKS = ['klassiker', 'pinsamt', 'svenskt', 'skarm', 'resor', 'jobb', 'fest', 'dejting', 'hemligt', 'vagat'];
 function load(data) {
   let saved = data && data.S ? data : null;
   if (!saved) { try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { saved = null; } }
+  const known = (saved && saved.S && saved.S.known) || (saved && saved.S ? FIRST_DECKS : DECKS.map(d => d.id));
   S = Object.assign(defaults(), (saved && saved.S) || {});
   S.decks = S.decks.filter(id => DECKS.some(d => d.id === id));
+  // Nya kortlekar kommer med automatiskt om de ryms inom den nivå man redan spelar på
+  const maxHeat = Math.max(0, ...DECKS.filter(d => S.decks.includes(d.id)).map(d => d.heat));
+  DECKS.forEach(d => { if (!known.includes(d.id) && d.heat <= maxHeat && !S.decks.includes(d.id)) S.decks.push(d.id); });
+  S.known = DECKS.map(d => d.id);
   G = saved && saved.G && Array.isArray(saved.G.cards) && saved.G.cards.length ? saved.G : null;
   view = (saved && saved.view) || 'setup';
   if (!G) view = 'setup';
@@ -781,7 +818,8 @@ function buildCards(fresh) {
   shuffle(pool);
   if (!S.twists || !pool.length) return pool;
   const out = [];
-  const rules = shuffle(RULES.map((_, i) => i));
+  const maxHeat = Math.max(0, ...DECKS.filter(d => S.decks.includes(d.id)).map(d => d.heat));
+  const rules = shuffle(RULES.map((_, i) => i).filter(i => !RULES[i].heat || RULES[i].heat <= maxHeat));
   let gap = rand(7, 10), ri = 0;
   pool.forEach((c, i) => {
     if (!(fresh && i < 3)) {

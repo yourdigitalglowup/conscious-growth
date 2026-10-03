@@ -4,11 +4,11 @@ Festspelet där sanningen kostar fingrar. En enda HTML-fil som fungerar i mobile
 
 ## Det här finns i spelet
 
-- **305 påståenden i 10 kortlekar**: Klassiker, Pinsamheter, Svenska synder, Skärmtid, Resor & äventyr, Jobb & plugg, Festminnen, Dejting & kärlek, Hemligheter och Vågat 18+.
+- **366 påståenden i 11 kortlekar**: Klassiker, Pinsamheter, Svenska synder, Skärmtid, Resor & äventyr, Jobb & plugg, Festminnen, Dejting & kärlek, Pirr, Hemligheter och Vågat 18+ (60 kort).
 - **Tre nivåer med ett tryck**: Snällt, Pikant och Vågat. Ni kan också välja kortlekar en och en.
 - **Fingerräkning**: lägg in upp till 12 namn. Alla börjar med 3, 5 eller 10 fingrar, och den som är sist kvar vinner.
 - **Syndaregister**: ett läge där ingen åker ut och appen bara räknar erkännanden.
-- **Twistkort**: *Dubbelt* kostar två fingrar, *Omvänt* betyder att de som INTE har gjort det fäller, och vart tionde kort ungefär är ett regelkort (Pekleken, Ögonkontakt, Tystnad m.fl.).
+- **Twistkort**: *Dubbelt* kostar två fingrar, *Omvänt* betyder att de som INTE har gjort det fäller, och vart tionde kort ungefär är ett regelkort (Pekleken, Ögonkontakt, Tystnad m.fl.). Med Vågat 18+ valt blandas även Heta stolen, Viskleken, Rodnaden, Kyss, gift, dumpa och Raggningsrepliken in.
 - **”Bara Sara. Historien, tack!”**: när en enda person har gjort något säger appen det direkt.
 - **Era egna kort**: internskämt blandas in i leken och sparas till nästa fest.
 - **Kvällens utmärkelser**: ställning, Helgonet, Har gjort allt, Ensamvargen och kortet som fällde flest.
