@@ -1,0 +1,1247 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Festspelet Jag har aldrig: 300+ påståenden, fingerräkning, twistkort och kvällens utmärkelser.">
+<meta name="theme-color" content="#EEEAF3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16122A" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jag har aldrig">
+<style>
+  /* Fristående läge: samma grund som Artifact-skalet ger sidan */
+  :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body { margin: 0; }
+  [hidden] { display: none !important; }
+</style>
+<!-- artifact:start -->
+<title>Jag har aldrig</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=Shrikhand&display=swap">
+<style>
+:root {
+  /* Layout: en mobilkolumn, en vy i taget. Affischpapper i bakgrunden, risotryckta kort i förgrunden. */
+  --ground: #EEEAF3;
+  --ground-2: #E1DBEA;
+  --surface: #FAF8FC;
+  --ink: #1F1A30;
+  --ink-soft: #5F5875;
+  --line: rgba(31, 26, 48, .14);
+  --accent: #FF4F9A;
+  --offset: #3550D6;
+  --on-color: #1F1A30;
+  --on-dark: #FFF4FA;
+  --paper: #FFF8EF;
+  --c-yellow: #FFD23F;
+  --c-orange: #FF8A3D;
+  --c-blue: #4562E8;
+  --c-mint: #4CD6A3;
+  --c-sky: #6CC9F2;
+  --c-violet: #A58AF7;
+  --c-pink: #FF6AA8;
+  --c-red: #F25A60;
+  --c-plum: #7B3D92;
+  --c-night: #251E3B;
+  --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
+  --font-body: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --shadow: 0 1px 0 rgba(31, 26, 48, .05), 0 16px 34px -18px rgba(31, 26, 48, .45);
+  --grain-o: .08;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #16122A; --ground-2: #201B38; --surface: #241E40; --ink: #F3EEFB; --ink-soft: #ADA5C6;
+    --line: rgba(243, 238, 251, .15); --accent: #FF5FA2; --offset: #7F95FF;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 18px 36px -16px rgba(0, 0, 0, .75); --grain-o: .05;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #16122A; --ground-2: #201B38; --surface: #241E40; --ink: #F3EEFB; --ink-soft: #ADA5C6;
+  --line: rgba(243, 238, 251, .15); --accent: #FF5FA2; --offset: #7F95FF;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 18px 36px -16px rgba(0, 0, 0, .75); --grain-o: .05;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--ground); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: var(--grain); opacity: var(--grain-o);
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid var(--offset); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.app { position: relative; z-index: 1; height: 100%; max-width: 540px; margin-inline: auto; }
+.view { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-inline: 16px; }
+
+@media (min-width: 760px) {
+  body::after {
+    content: "Jag har aldrig"; position: fixed; left: -3vw; bottom: -4vw; z-index: 0; pointer-events: none;
+    font-family: var(--font-display); font-size: 19vw; line-height: 1; white-space: nowrap;
+    color: var(--ground-2); transform: rotate(-7deg);
+  }
+}
+
+/* ---------- Knappar ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  border: 0; border-radius: 999px; padding: .75rem 1.15rem;
+  font-weight: 700; font-size: 1rem; line-height: 1.1; white-space: nowrap;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .15s;
+}
+.btn-ink { background: var(--ink); color: var(--ground); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-accent { background: var(--accent); color: var(--on-color); box-shadow: 3px 3px 0 var(--offset); }
+.btn-accent:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--offset); }
+.btn-accent:disabled { background: var(--ground-2); color: var(--ink-soft); box-shadow: none; }
+.btn-big { flex: 1; padding-block: 1rem; font-size: 1.08rem; }
+.btn-meta { font-weight: 500; opacity: .75; font-variant-numeric: tabular-nums; }
+.btn:disabled { opacity: .55; }
+.btn-accent:disabled { opacity: 1; }
+.btn-text {
+  background: none; border: 0; padding: .5rem .6rem; border-radius: 10px;
+  display: inline-flex; align-items: center; gap: .3rem; font-weight: 600; color: var(--ink-soft);
+}
+.btn-text svg { width: 18px; height: 18px; }
+
+.bar {
+  display: flex; gap: 10px; padding: 12px 16px 14px;
+  border-top: 1px solid var(--line); background: var(--ground);
+}
+
+/* ---------- Startvy ---------- */
+.hero { padding-block: 28px 8px; }
+.mark { display: flex; align-items: flex-end; gap: 5px; height: 38px; margin-bottom: 14px; }
+.mark i { width: 11px; border-radius: 6px; transform-origin: bottom; animation: rise .6s cubic-bezier(.3, 1.5, .5, 1) both; }
+.mark i:nth-child(1) { height: 50%; background: var(--c-pink); transform: rotate(-20deg); margin-right: 3px; animation-delay: .05s; }
+.mark i:nth-child(2) { height: 84%; background: var(--c-yellow); animation-delay: .12s; }
+.mark i:nth-child(3) { height: 100%; background: var(--c-mint); animation-delay: .19s; }
+.mark i:nth-child(4) { height: 90%; background: var(--c-sky); animation-delay: .26s; }
+.mark i:nth-child(5) { height: 66%; background: var(--c-violet); animation-delay: .33s; }
+@keyframes rise { from { scale: 1 .1; opacity: 0; } to { scale: 1 1; opacity: 1; } }
+.logo {
+  margin: 0; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(3.3rem, 16.5vw, 5.1rem); line-height: .95; letter-spacing: -.01em;
+  color: var(--accent); text-shadow: .045em .045em 0 var(--offset);
+}
+.logo span { display: block; }
+.tagline { margin: 16px 0 6px; font-size: 1.22rem; font-weight: 600; line-height: 1.3; max-width: 22ch; text-wrap: balance; }
+.facts { margin: 0; color: var(--ink-soft); font-size: .86rem; font-variant-numeric: tabular-nums; }
+
+.resume {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: 20px; padding: 14px 14px 14px 16px; border-radius: 18px;
+  background: var(--surface); border: 1.5px solid var(--line);
+}
+.resume p { margin: 0; display: flex; flex-direction: column; min-width: 0; }
+.resume span { color: var(--ink-soft); font-size: .88rem; font-variant-numeric: tabular-nums; }
+
+.block { padding-block: 26px 4px; display: flex; flex-direction: column; gap: 12px; }
+.block h2 { margin: 0; font-size: 1.32rem; letter-spacing: -.01em; line-height: 1.2; }
+.block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.hint { color: var(--ink-soft); font-size: .84rem; font-variant-numeric: tabular-nums; text-align: right; }
+.note { margin: 0; color: var(--ink-soft); font-size: .92rem; max-width: 60ch; }
+.msg { margin: 0; font-size: .88rem; font-weight: 600; color: var(--accent); min-height: 0; }
+.msg:empty { display: none; }
+
+.inline-form { display: flex; gap: 8px; }
+.inline-form input {
+  flex: 1; min-width: 0; padding: .78rem 1rem; border-radius: 999px;
+  background: var(--surface); border: 1.5px solid var(--line); font-size: 1rem;
+}
+.inline-form input::placeholder { color: var(--ink-soft); opacity: .8; }
+.inline-form input:focus { outline: none; border-color: var(--offset); }
+
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px;
+  border-radius: 999px; background: var(--surface); border: 1.5px solid var(--line); font-weight: 600; max-width: 100%;
+}
+.chip .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--pc); flex: none; }
+.chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.chip-x {
+  width: 28px; height: 28px; flex: none; border-radius: 50%; border: 0; display: grid; place-items: center;
+  background: var(--ground-2); color: var(--ink-soft);
+}
+.chip-x svg { width: 12px; height: 12px; }
+
+.seg {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px;
+  padding: 5px; border-radius: 18px; background: var(--ground-2);
+}
+.seg button {
+  border: 0; background: transparent; border-radius: 13px; padding: .7rem .5rem;
+  font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 2px; line-height: 1.15;
+  transition: background .15s, color .15s;
+}
+.seg button small { font-weight: 500; font-size: .74rem; color: var(--ink-soft); text-align: center; }
+.seg button.on { background: var(--surface); box-shadow: 0 1px 0 var(--line), 0 6px 14px -10px rgba(0, 0, 0, .5); }
+.seg-level button.on[data-level="1"] { background: var(--c-yellow); color: var(--on-color); }
+.seg-level button.on[data-level="2"] { background: var(--c-pink); color: var(--on-color); }
+.seg-level button.on[data-level="3"] { background: var(--c-night); color: var(--on-dark); box-shadow: inset 0 0 0 2px var(--c-pink); }
+.seg-level button.on small { color: inherit; opacity: .8; }
+.seg-sm { width: 9.5rem; flex: none; }
+.seg-sm button { padding: .5rem; font-variant-numeric: tabular-nums; }
+
+.deck-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.deck {
+  position: relative; text-align: left; display: flex; flex-direction: column; gap: 4px;
+  min-height: 128px; padding: 13px 13px 11px; border-radius: 18px;
+  background: var(--surface); border: 1.5px dashed var(--line); color: var(--ink-soft);
+  transition: background .15s, color .15s, transform .12s;
+}
+.deck:active { transform: scale(.98); }
+.deck-name { font-weight: 700; font-size: 1.02rem; color: var(--ink); padding-right: 26px; line-height: 1.2; }
+.deck-blurb { font-size: .8rem; line-height: 1.3; }
+.deck-foot {
+  margin-top: auto; padding-top: 6px; display: flex; align-items: center; justify-content: space-between;
+  font-size: .74rem; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.deck-check {
+  position: absolute; top: 11px; right: 11px; width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--line); display: grid; place-items: center; background: var(--dc);
+}
+.deck-check svg { width: 12px; height: 12px; opacity: 0; }
+.deck.on { background: var(--dc); color: var(--dfg); border: 1.5px solid transparent; }
+.deck.on .deck-name { color: var(--dfg); }
+.deck.on .deck-check { background: var(--dfg); border-color: transparent; color: var(--dc); }
+.deck.on .deck-check svg { opacity: 1; }
+.deck.night.on { box-shadow: inset 0 0 0 2px var(--c-pink); }
+
+.heat { display: inline-flex; gap: 3px; align-items: flex-end; }
+.heat i { width: 5px; border-radius: 2px; background: currentColor; opacity: .25; }
+.heat i:nth-child(1) { height: 6px; } .heat i:nth-child(2) { height: 9px; } .heat i:nth-child(3) { height: 12px; }
+.heat i.on { opacity: 1; }
+
+.custom-label { font-family: var(--font-display); font-size: 1.05rem; color: var(--accent); margin: 0 0 -4px 4px; }
+.custom-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.custom-list li {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 8px 10px 14px; border-radius: 14px; background: var(--paper); color: var(--on-color);
+  font-weight: 600; box-shadow: var(--shadow);
+}
+.custom-list li span { min-width: 0; overflow-wrap: anywhere; }
+.custom-list em { font-style: normal; font-weight: 500; opacity: .6; }
+
+.row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.row-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.row-label { font-weight: 700; }
+.switch {
+  flex: none; width: 54px; height: 32px; border-radius: 999px; border: 0; padding: 3px;
+  background: var(--ground-2); transition: background .18s;
+}
+.switch .knob {
+  display: block; width: 26px; height: 26px; border-radius: 50%; background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform .18s;
+}
+.switch[aria-checked="true"] { background: var(--accent); }
+.switch[aria-checked="true"] .knob { transform: translateX(22px); background: var(--on-color); }
+
+.howto { margin: 26px 0 28px; border-top: 1.5px solid var(--line); padding-top: 4px; }
+.howto summary {
+  list-style: none; cursor: pointer; padding: 14px 0; font-weight: 700; font-size: 1.08rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.howto summary::-webkit-details-marker { display: none; }
+.howto summary svg { width: 18px; height: 18px; transition: transform .2s; }
+.howto[open] summary svg { transform: rotate(180deg); }
+.howto ol { margin: 0 0 12px; padding-left: 1.3rem; display: flex; flex-direction: column; gap: 6px; }
+.howto li::marker { font-weight: 700; color: var(--accent); }
+.howto p { margin: 0 0 10px; color: var(--ink-soft); font-size: .94rem; max-width: 60ch; }
+.howto b { color: var(--ink); }
+
+/* ---------- Spelvy ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 4px; }
+.counter {
+  font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.play-scroll { display: flex; flex-direction: column; gap: 12px; padding-block: 8px 16px; }
+.stage { position: relative; display: grid; flex: 1 0 auto; min-height: clamp(270px, 47vh, 440px); margin: 4px 4px 18px; }
+.no-players .stage { min-height: clamp(320px, 66vh, 600px); }
+.stack, .card { grid-area: 1 / 1; border-radius: 28px; }
+.stack { background: var(--stack-bg, var(--ground-2)); transform-origin: 50% 100%; transition: background .3s; }
+.stack.s1 { transform: rotate(-3.4deg) translate(-3px, 7px); }
+.stack.s2 { transform: rotate(2.8deg) translate(5px, 12px); opacity: .9; }
+
+.card {
+  position: relative; z-index: 2; overflow: hidden;
+  display: flex; flex-direction: column; gap: 12px; padding: 18px 22px 46px;
+  background: var(--card-bg, var(--paper)); color: var(--card-fg, var(--on-color));
+  box-shadow: var(--shadow); touch-action: pan-y; user-select: none; -webkit-user-select: none;
+  transition: transform .22s cubic-bezier(.2, .8, .2, 1), opacity .22s ease;
+}
+.card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background-image: var(--grain); opacity: .16; mix-blend-mode: multiply;
+}
+.card.night { box-shadow: inset 0 0 0 2.5px var(--c-pink), var(--shadow); }
+.card.night::after { mix-blend-mode: screen; opacity: .07; }
+.card-top {
+  display: flex; align-items: center; gap: 8px; min-height: 30px; padding-right: 96px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .82;
+}
+.eyebrow { margin: 6px 0 0; font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; }
+.statement {
+  flex: 1; display: flex; align-items: center; margin: 0;
+  font-weight: 700; letter-spacing: -.02em; line-height: 1.06; text-wrap: balance; overflow-wrap: anywhere;
+}
+.statement.xl { font-size: clamp(2.2rem, 10vw, 3rem); }
+.statement.l { font-size: clamp(1.9rem, 8.2vw, 2.5rem); }
+.statement.m { font-size: clamp(1.6rem, 6.8vw, 2.05rem); }
+.statement.s { font-size: clamp(1.35rem, 5.6vw, 1.7rem); line-height: 1.12; }
+.stamp {
+  position: absolute; top: 16px; right: 16px; z-index: 1; transform: rotate(8deg);
+  display: flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 8px;
+  border: 2.5px solid currentColor; font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+}
+.stamp b { font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; letter-spacing: 0; line-height: 1; }
+
+.card.rule { padding-top: 82px; }
+.tape {
+  position: absolute; left: -12%; right: -12%; top: 24px; transform: rotate(-4deg);
+  background: var(--c-yellow); color: var(--on-color); padding: 7px 0; overflow: hidden; white-space: nowrap;
+  font-size: .72rem; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; text-align: center;
+  box-shadow: 0 2px 0 rgba(31, 26, 48, .12);
+}
+.rule-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 8.6vw, 2.6rem); line-height: 1.02; }
+.rule-text { margin: 0; font-size: 1.16rem; font-weight: 500; line-height: 1.4; max-width: 34ch; }
+
+.sticker {
+  position: absolute; right: 8px; bottom: -14px; z-index: 3; max-width: 86%; margin: 0;
+  padding: .55rem .85rem; border-radius: 12px; transform: rotate(-2.5deg);
+  background: var(--accent); color: var(--on-color); font-weight: 700; line-height: 1.25;
+  box-shadow: 3px 3px 0 var(--offset); animation: pop .28s cubic-bezier(.3, 1.6, .5, 1);
+}
+.sticker b { font-family: var(--font-display); font-weight: 400; }
+@keyframes pop { from { transform: rotate(-2.5deg) scale(.6); opacity: 0; } }
+
+.players-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-inline: 2px; }
+.tap-hint { font-weight: 600; font-size: .92rem; }
+.tap-hint strong { color: var(--accent); }
+.legend { color: var(--ink-soft); font-size: .8rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.players { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.player {
+  position: relative; text-align: left; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  min-height: 78px; padding: 10px 11px; border-radius: 16px;
+  background: var(--surface); border: 1.5px solid var(--line); color: var(--ink);
+  transition: background .15s, transform .12s, opacity .2s;
+}
+.player:active:not(:disabled) { transform: scale(.96); }
+.p-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; }
+.p-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; display: flex; align-items: center; gap: 6px; }
+.p-name::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--pc); flex: none; }
+.p-badge { font-weight: 700; font-size: .8rem; font-variant-numeric: tabular-nums; flex: none; }
+.p-badge:empty { display: none; }
+.hand { display: flex; align-items: flex-end; gap: 3px; height: 26px; }
+.hand i {
+  width: 6px; border-radius: 3px; background: currentColor; height: calc(var(--h) * 100%);
+  transform-origin: bottom; transition: height .28s cubic-bezier(.3, 1.4, .5, 1), opacity .28s;
+}
+.hand i.thumb { transform: rotate(-22deg); margin-right: 2px; }
+.hand i:nth-child(6) { margin-left: 7px; }
+.hand i.down { height: 5px; opacity: .28; }
+.score { display: flex; align-items: baseline; gap: 5px; }
+.score b { font-size: 1.55rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.score small { font-size: .78rem; opacity: .75; }
+.player.is-marked { background: var(--pc); color: var(--on-color); border-color: transparent; box-shadow: 2px 2px 0 var(--on-color); }
+.player.is-marked .p-name::before { background: var(--on-color); }
+.player.is-out { opacity: .45; }
+.player.is-out .p-name { text-decoration: line-through; }
+.player:disabled:not(.is-out) { opacity: .55; }
+
+/* ---------- Resultat ---------- */
+.podium { padding-block: 16px 6px; }
+.eyebrow-small {
+  margin: 0 0 6px; font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft);
+}
+.winner {
+  margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(2.6rem, 12vw, 4rem);
+  line-height: 1; color: var(--accent); text-shadow: .045em .045em 0 var(--offset); overflow-wrap: anywhere;
+}
+.res-sub { margin: 14px 0 0; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.section-label { margin: 26px 0 10px; font-size: 1.15rem; }
+.ranking { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.ranking li {
+  display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--line);
+}
+.r-pos { font-family: var(--font-display); font-size: 1.35rem; color: var(--ink-soft); text-align: center; }
+.ranking li:first-child .r-pos { color: var(--accent); }
+.r-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.r-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.r-bar { height: 7px; border-radius: 4px; background: var(--ground-2); overflow: hidden; }
+.r-bar i { display: block; height: 100%; border-radius: 4px; background: var(--pc); }
+.r-val { font-weight: 600; font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.awards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 28px; }
+.award {
+  display: flex; flex-direction: column; gap: 3px; padding: 14px; border-radius: 18px;
+  background: var(--surface); border: 1.5px solid var(--line); min-width: 0;
+}
+.award-label { font-size: .7rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-soft); }
+.award-name { font-weight: 700; font-size: 1.2rem; line-height: 1.2; overflow-wrap: anywhere; }
+.award-detail { font-size: .86rem; color: var(--ink-soft); }
+.award.top-card {
+  grid-column: 1 / -1; position: relative; overflow: hidden; border: 0; padding: 18px 20px;
+  background: var(--card-bg); color: var(--card-fg); box-shadow: var(--shadow);
+}
+.award.top-card .award-label, .award.top-card .award-detail { color: inherit; opacity: .78; }
+.award.top-card .eyebrow { font-size: 1.15rem; margin-top: 8px; }
+.tc-text { margin: 0; font-weight: 700; font-size: 1.45rem; line-height: 1.12; letter-spacing: -.015em; text-wrap: balance; }
+
+@media (max-width: 360px) {
+  .deck-grid, .awards { grid-template-columns: minmax(0, 1fr); }
+  .seg button small { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="app">
+  <!-- ===== Start ===== -->
+  <section class="view" id="view-setup">
+    <div class="scroll">
+      <header class="hero">
+        <div class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <h1 class="logo"><span>Jag har</span><span>aldrig</span></h1>
+        <p class="tagline">Festspelet där sanningen kostar fingrar.</p>
+        <p class="facts" id="facts"></p>
+      </header>
+
+      <div class="resume" id="resume" hidden>
+        <p><strong>Ni har ett spel igång</strong><span id="resume-meta"></span></p>
+        <button type="button" class="btn btn-ink" id="btn-resume">Fortsätt</button>
+      </div>
+
+      <section class="block" aria-labelledby="h-players">
+        <div class="block-head"><h2 id="h-players">Vilka spelar?</h2><span class="hint" id="player-count"></span></div>
+        <form class="inline-form" id="player-form" autocomplete="off">
+          <label class="sr" for="player-input">Spelarens namn</label>
+          <input id="player-input" name="player" maxlength="16" placeholder="Namn">
+          <button type="submit" class="btn btn-ink">Lägg till</button>
+        </form>
+        <p class="msg" id="player-msg" role="status"></p>
+        <ul class="chips" id="player-list"></ul>
+        <p class="note" id="player-empty">Utan namn blir det bara kort att läsa högt. Med namn håller appen koll på allas fingrar och utser en vinnare.</p>
+      </section>
+
+      <section class="block" aria-labelledby="h-level">
+        <div class="block-head"><h2 id="h-level">Hur vågat?</h2><span class="hint" id="deck-count"></span></div>
+        <div class="seg seg-level" id="level-seg" role="radiogroup" aria-labelledby="h-level">
+          <button type="button" role="radio" data-level="1">Snällt<small>Funkar med svärmor</small></button>
+          <button type="button" role="radio" data-level="2">Pikant<small>Festens standard</small></button>
+          <button type="button" role="radio" data-level="3">Vågat<small>18+, inga filter</small></button>
+        </div>
+        <div class="deck-grid" id="deck-grid"></div>
+      </section>
+
+      <section class="block" aria-labelledby="h-custom">
+        <div class="block-head"><h2 id="h-custom">Era egna kort</h2><span class="hint" id="custom-count"></span></div>
+        <p class="custom-label" aria-hidden="true">Jag har aldrig…</p>
+        <form class="inline-form" id="custom-form" autocomplete="off">
+          <label class="sr" for="custom-input">Jag har aldrig …</label>
+          <input id="custom-input" name="custom" maxlength="110" placeholder="dansat med en kändis">
+          <button type="submit" class="btn btn-ink">Lägg till</button>
+        </form>
+        <ul class="custom-list" id="custom-list"></ul>
+        <p class="note" id="custom-empty">Internskämt och gamla synder som bara ert gäng fattar. De blandas in bland de andra korten.</p>
+      </section>
+
+      <section class="block" aria-labelledby="h-rules">
+        <h2 id="h-rules">Spelregler</h2>
+        <div class="seg" id="mode-seg" role="radiogroup" aria-label="Spelläge">
+          <button type="button" role="radio" data-mode="fingers">Fingrar</button>
+          <button type="button" role="radio" data-mode="points">Syndaregister</button>
+        </div>
+        <p class="note" id="mode-desc"></p>
+        <div class="row" id="finger-row">
+          <span class="row-label" id="finger-label">Fingrar per spelare</span>
+          <div class="seg seg-sm" id="finger-seg" role="radiogroup" aria-labelledby="finger-label">
+            <button type="button" role="radio" data-fingers="3">3</button>
+            <button type="button" role="radio" data-fingers="5">5</button>
+            <button type="button" role="radio" data-fingers="10">10</button>
+          </div>
+        </div>
+        <div class="row">
+          <span class="row-text">
+            <span class="row-label" id="twist-label">Twistkort</span>
+            <span class="note">Dubbla straff, omvända kort och regler som ställer till det.</span>
+          </span>
+          <button type="button" class="switch" id="twist-toggle" role="switch" aria-checked="true" aria-labelledby="twist-label"><span class="knob"></span></button>
+        </div>
+      </section>
+
+      <details class="howto">
+        <summary>Så spelar ni <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary>
+        <ol>
+          <li>En läser kortet högt: ”Jag har aldrig …”</li>
+          <li>Alla som <b>har</b> gjort det fäller ett finger. Tryck på deras namn.</li>
+          <li>Var det bara en? Då vill alla höra historien.</li>
+          <li>Slut på fingrar och du är ute. Sist kvar vinner.</li>
+        </ol>
+        <p><b>Dubbelt</b> kostar två fingrar. <b>Omvänt</b> betyder att de som inte har gjort det fäller. <b>Regelkort</b> dyker upp ungefär vart tionde kort.</p>
+        <p>Svep kortet åt vänster för nästa och åt höger för att backa. Tryckte någon fel? Tryck igen så ångras det.</p>
+      </details>
+    </div>
+    <footer class="bar">
+      <button type="button" class="btn btn-accent btn-big" id="btn-start"><span id="start-label">Kör igång</span><span class="btn-meta" id="start-meta"></span></button>
+    </footer>
+  </section>
+
+  <!-- ===== Spel ===== -->
+  <section class="view" id="view-play" hidden>
+    <header class="topbar">
+      <button type="button" class="btn-text" id="btn-menu"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5"/></svg>Meny</button>
+      <span class="counter" id="counter" aria-live="polite"></span>
+      <button type="button" class="btn-text" id="btn-end">Avsluta</button>
+    </header>
+    <div class="scroll play-scroll">
+      <div class="stage">
+        <div class="stack s2" id="stack2" aria-hidden="true"></div>
+        <div class="stack s1" id="stack1" aria-hidden="true"></div>
+        <article class="card" id="card" aria-live="polite" aria-atomic="true"></article>
+        <p class="sticker" id="verdict" role="status" hidden></p>
+      </div>
+      <div class="players-head" id="players-head">
+        <span class="tap-hint" id="tap-hint"></span>
+        <span class="legend" id="legend"></span>
+      </div>
+      <div class="players" id="players"></div>
+    </div>
+    <footer class="bar">
+      <button type="button" class="btn btn-ghost" id="btn-prev">Förra</button>
+      <button type="button" class="btn btn-accent btn-big" id="btn-next"><span id="next-label">Nästa kort</span></button>
+    </footer>
+  </section>
+
+  <!-- ===== Resultat ===== -->
+  <section class="view" id="view-results" hidden>
+    <header class="topbar">
+      <button type="button" class="btn-text" id="btn-back-game"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5"/></svg>Tillbaka till spelet</button>
+    </header>
+    <div class="scroll">
+      <header class="podium">
+        <p class="eyebrow-small" id="res-eyebrow"></p>
+        <h1 class="winner" id="res-title"></h1>
+        <p class="res-sub" id="res-sub"></p>
+      </header>
+      <h2 class="section-label">Ställningen</h2>
+      <ol class="ranking" id="ranking"></ol>
+      <h2 class="section-label" id="awards-label">Kvällens utmärkelser</h2>
+      <div class="awards" id="awards"></div>
+    </div>
+    <footer class="bar">
+      <button type="button" class="btn btn-ghost" id="btn-menu2">Meny</button>
+      <button type="button" class="btn btn-accent btn-big" id="btn-rematch">Ny runda, samma gäng</button>
+    </footer>
+  </section>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= Innehåll ================= */
+const DECKS = [
+  { id: 'klassiker', name: 'Klassiker', blurb: 'Uppvärmning. Ingen behöver svettas än.', heat: 1, color: 'var(--c-yellow)', fg: 'var(--on-color)', cards: [
+    'ätit något som legat på golvet', 'somnat på bio', 'låtsats prata i telefon för att slippa hälsa på någon',
+    'sjungit karaoke inför främlingar', 'gråtit till en reklamfilm', 'glömt bort en nära väns födelsedag',
+    'skyllt en fis på någon annan', 'legat i sängen en hel dag utan att vara sjuk', 'gått rakt in i en glasdörr',
+    'ätit frukost till middag', 'fått dricka att spruta ut genom näsan av skratt', 'klippt mig själv och ångrat det direkt',
+    'luktat på mjölken, tvekat och druckit den ändå', 'låtsats känna igen någon som hälsade på mig',
+    'sett om samma serie mer än tre gånger', 'ljugit om min ålder', 'ätit en hel familjepizza själv',
+    'kört vilse trots att GPS:en var på', 'svarat ”du med” när någon sa ”trevlig resa”', 'tappat mobilen i toaletten',
+    'haft på mig samma tröja tre dagar i rad', 'sagt att jag läst en bok när jag bara sett filmen',
+    'gömt mig när det ringde på dörren', 'öppnat kylskåpet tre gånger på fem minuter i hopp om att något nytt dykt upp',
+    'sagt ”vi måste ses snart” utan att mena det', 'ätit godis till frukost', 'dansat ensam framför spegeln',
+    'haft en låtsaskompis', 'brutit ett ben i kroppen', 'åkt ambulans', 'haft samma kändiscrush i över tio år'
+  ]},
+  { id: 'pinsamt', name: 'Pinsamheter', blurb: 'Saker du helst låtsas att du har glömt.', heat: 1, color: 'var(--c-orange)', fg: 'var(--on-color)', cards: [
+    'skickat ett sms om någon till personen själv', 'ramlat inför en stor publik', 'haft gylfen öppen ett helt möte',
+    'somnat och snarkat på ett tåg', 'sagt ”puss, hej” till chefen i telefon av ren reflex',
+    'gått runt med toapapper fast under skon', 'fått skrattattack på en begravning',
+    'vinkat tillbaka till någon som vinkade till personen bakom mig', 'fastnat i en dörr, ett fönster eller en grind',
+    'glömt namnet på någon jag skulle presentera', 'kallat en lärare för mamma eller pappa',
+    'sjungit fel text i en låt i flera år utan att fatta det', 'blivit påkommen med att prata högt med mig själv',
+    'gått in på fel toalett', 'dragit i en dörr där det stod ”tryck”', 'haft prislappen kvar på kläderna en hel dag',
+    'haft något mellan tänderna en hel kväll utan att någon sa något', 'ropat på mamma när jag blev rädd, som vuxen',
+    'svarat på en fråga som inte var riktad till mig', 'gett någon en kram när de sträckte fram handen',
+    'låtsats fatta ett skämt', 'nyst rakt på någon', 'fickringt någon som hörde allt jag sa',
+    'slagit huvudet i ett skåp jag själv lämnat öppet', 'trillat i en pool med kläderna på',
+    'avslöjat att jag stalkat någon genom att nämna något jag inte borde veta', 'uttalat ett ord fel i flera år',
+    'gett bort en present med prislappen kvar', 'kommit en hel dag för tidigt till ett kalas',
+    'skickat ett röstmeddelande av misstag', 'somnat i en frisörstol'
+  ]},
+  { id: 'svenskt', name: 'Svenska synder', blurb: 'Midsommar, tvättstuga och lagom mycket skam.', heat: 1, color: 'var(--c-blue)', fg: 'var(--on-dark)', cards: [
+    'hoppat över midsommar', 'ätit surströmming', 'byggt en IKEA-möbel och fått skruvar över',
+    'gått ut från IKEA med bara det som stod på listan', 'tagit den sista kanelbullen utan att fråga',
+    'tackat nej till fika', 'trängt mig i en kö', 'tagit en nummerlapp och gått innan det blev min tur',
+    'frivilligt pratat med en främling i en hiss', 'smugit förbi grannen i trapphuset för att slippa småprata',
+    'låtsats att jag inte är hemma när grannen knackat på', 'tvättat på någon annans tvättid',
+    'skrivit en arg lapp i tvättstugan', 'slängt en pantburk i vanliga soporna',
+    'sprungit till Systembolaget minuter innan de stängde', 'ätit Kalles kaviar direkt ur tuben',
+    'badat i havet före midsommar', 'doppat mig i en isvak', 'dansat små grodorna helt nykter',
+    'missat Kalle Anka klockan tre på julafton', 'röstat i Melodifestivalen', 'gråtit till ett Melodifestivalbidrag',
+    'låtsats gilla kräftor', 'burit kräftskivehatt hela kvällen', 'glömt att ta av mig skorna hemma hos någon',
+    'tältat på någons mark och hänvisat till allemansrätten', 'köpt lösgodis för över hundra kronor på en gång',
+    'druckit julmust i juli', 'klätt ut mig till lucia, tärna, tomtenisse eller stjärngosse',
+    'försökt förklara ordet ”lagom” för en utlänning', 'tagit med egen matsäck till ett nöjesfält',
+    'sagt ”det finns inget dåligt väder, bara dåliga kläder” på fullt allvar'
+  ]},
+  { id: 'skarm', name: 'Skärmtid', blurb: 'Mobilen vet redan. Nu får resten av rummet veta.', heat: 1, color: 'var(--c-mint)', fg: 'var(--on-color)', cards: [
+    'stalkat ett ex på sociala medier', 'råkat gilla en flera år gammal bild när jag stalkade någon',
+    'googlat mig själv', 'raderat ett inlägg för att det fick för få likes',
+    'tagit över tjugo bilder för att få en enda bra selfie', 'haft en profilbild som inte längre ser ut som jag',
+    'lämnat någon på ”läst” med flit', 'skrivit ”haha” utan att ens dra på munnen',
+    'suttit på toa med mobilen i över en halvtimme', 'svarat på ett meddelande i huvudet och glömt att faktiskt skicka det',
+    'scrollat tills solen gick upp', 'köpt något direkt från en annons i flödet', 'lyssnat på samma låt på repeat en hel dag',
+    'haft ett hemligt andrakonto', 'skickat en skärmdump av en konversation till personen den handlade om',
+    'haft över tusen olästa mejl', 'grälat med en främling i ett kommentarsfält',
+    'lagt upp en story bara för att en viss person skulle se den', 'låtsats att jag inte sett ett meddelande',
+    'kollat någons story från någon annans konto', 'pratat mer med en AI än med en människa på en dag',
+    'sparat ett meme i veckor för att skicka det vid exakt rätt tillfälle', 'spelat in en dans till sociala medier',
+    'kollat in mitt ex nya partners profil', 'stängt av mobilen en hel helg frivilligt',
+    'skickat en skärmdump av någons dejtingprofil till gruppchatten', 'lagt mer än en timme på att välja profilbild',
+    'redigerat ett foto så mycket att jag inte såg ut som jag', 'lämnat en gruppchatt i smyg',
+    'skrivit ett LinkedIn-inlägg som började med ”Jag är så ödmjuk och tacksam”'
+  ]},
+  { id: 'resor', name: 'Resor & äventyr', blurb: 'Pass, panik och minnen på andra språk.', heat: 1, color: 'var(--c-sky)', fg: 'var(--on-color)', cards: [
+    'missat ett flyg', 'sovit på en flygplats', 'tappat bort mitt pass', 'åkt fast för fortkörning',
+    'hoppat fallskärm eller bungyjump', 'nakenbadat', 'åkt utomlands utan att planera ett enda dugg',
+    'ätit något utomlands utan att veta vad det var', 'blivit blåst av en taxichaufför',
+    'bränt mig så illa i solen att jag såg ut som en kokt kräfta', 'tågluffat', 'sovit i en bil',
+    'tagit en bild där det var förbjudet att fotografera', 'bott på ett hotell jag egentligen inte hade råd med',
+    'köpt en souvenir som aldrig lämnat lådan', 'varit på festival utan att duscha på tre dagar',
+    'rest till ett land där jag inte kunde ett enda ord', 'blivit kär på semestern', 'bestigit ett fjäll',
+    'sett norrsken', 'gått vilse i en främmande stad mitt i natten', 'smugit in i en hotellpool där jag inte bodde',
+    'tagit med mig mer sprit hem än man får', 'rest bort med någon jag knappt kände',
+    'bokat en resa mitt i natten på ren impuls', 'hamnat på sjukhus utomlands', 'låtsats vara från ett annat land',
+    'sovit under bar himmel', 'kört på fel sida av vägen', 'tappat bort mitt resesällskap en hel dag'
+  ]},
+  { id: 'jobb', name: 'Jobb & plugg', blurb: 'Allt som chefen och läraren aldrig fick veta.', heat: 1, color: 'var(--c-violet)', fg: 'var(--on-color)', cards: [
+    'fuskat på ett prov', 'sjukanmält mig utan att vara sjuk', 'somnat på ett möte',
+    'googlat ett ord chefen sa, mitt under mötet', 'ljugit på mitt CV', 'skrivit en hel uppsats natten före deadline',
+    'ätit någon annans mat ur personalkylen', 'haft kameran på när jag trodde att den var av',
+    'glömt att stänga av mikrofonen i ett videomöte', 'sagt upp mig på impuls', 'blivit kär i en kollega',
+    'snackat skit om chefen när chefen stod bakom mig', 'handlat på nätet medan jag låtsades jobba',
+    'tagit med mig kontorsmaterial hem', 'tagit en tupplur på jobbet i smyg', 'ljugit om varför jag kom sent',
+    'glömt bort ett möte som jag själv bokat', 'haft pyjamasbyxor på mig under ett videomöte',
+    'sagt ”bra fråga” bara för att köpa mig tid', 'hoppat av en utbildning', 'blivit utkastad från ett klassrum',
+    'tagit åt mig äran för någon annans idé', 'fått sparken', 'tryckt på ”svara alla” när jag verkligen inte borde',
+    'blivit full på en firmafest', 'lämnat in något som jag inte ens läst igenom', 'ätit lunch före klockan tio',
+    'låtsats vara upptagen för att slippa en arbetsuppgift',
+    'skrivit ”som jag nämnde i mitt förra mejl” med full passiv aggressivitet', 'gråtit på jobbets toalett'
+  ]},
+  { id: 'fest', name: 'Festminnen', blurb: 'Allt som hände efter klockan två.', heat: 2, color: 'var(--c-pink)', fg: 'var(--on-color)', cards: [
+    'vaknat utan att veta hur jag kom hem', 'somnat på en fest och vaknat med något ritat i ansiktet',
+    'smitit från en fest utan att säga hejdå', 'hånglat med någon vars namn jag inte visste', 'ringt ett ex på fyllan',
+    'dansat uppe på ett bord', 'ätit en hel kebabtallrik klockan fyra på natten', 'tappat bort mina skor under en utekväll',
+    'blivit nekad i dörren på en klubb', 'spytt i någon annans badrum', 'fått ett blåmärke på fyllan som jag inte kan förklara',
+    'skickat sms på fyllan som jag fick be om ursäkt för', 'ljugit om hur mycket jag druckit', 'vaknat i fel säng',
+    'lagt upp något på fyllan och raderat det morgonen efter', 'tagit med mig en främling på efterfest',
+    'sjungit allsång på nattbussen', 'tjatat på alla att ta ”bara en till”', 'gått hem från en fest i någon annans jacka',
+    'blivit utslängd från en bar', 'ringt mina föräldrar full',
+    'sagt ”jag dricker aldrig mer” och hållit det i mer än två dagar', 'tappat bort en hel kväll ur minnet',
+    'haft fest hemma när föräldrarna var bortresta', 'blivit hemskjutsad av polisen',
+    'tagit en shot utan att veta vad den innehöll', 'smugit in på en fest jag inte var bjuden till', 'somnat i ett badkar',
+    'vaknat på en soffa hos någon jag inte kände', 'berättat hela mitt kärleksliv för en taxichaufför'
+  ]},
+  { id: 'dejting', name: 'Dejting & kärlek', blurb: 'Swipes, ex och dejter som borde stannat i utkasten.', heat: 2, color: 'var(--c-red)', fg: 'var(--on-color)', cards: [
+    'blivit ghostad', 'ghostat någon', 'gått på en blinddejt', 'dejtat två personer samtidigt',
+    'ljugit om längd eller ålder på en dejtingapp', 'gjort slut över sms', 'blivit dumpad på en högtid',
+    'smitit från en dejt via toaletten', 'varit kär i min bästa väns partner', 'skrivit ett kärleksbrev för hand',
+    'haft en hemlig relation', 'gått tillbaka till ett ex', 'sagt ”jag älskar dig” först och inte fått det tillbaka',
+    'sagt ”jag älskar dig” utan att mena det', 'swipat höger på alla en hel kväll', 'varit kär i en lärare',
+    'gått på en dejt bara för den gratis maten', 'kollat upp en dejt så noga att jag visste vad hens mamma hette',
+    'bjudit ut någon och fått nej', 'friat eller blivit friad till', 'gjort slut och ångrat mig dagen efter',
+    'kysst någon på första dejten', 'dejtat någon mer än tio år äldre', 'skrivit ett flörtigt meddelande med hjälp av AI',
+    'kysst någon när klockan slog tolv på nyår', 'haft ett situationship i över ett år',
+    'sagt fel namn till den jag dejtade', 'skrivit och raderat samma sms i en timme',
+    'blivit tillsammans med någon jag träffat på en app', 'varit på en dejt så tyst att jag hörde min egen puls'
+  ]},
+  { id: 'hemligt', name: 'Hemligheter', blurb: 'Erkännanden som kräver mod. Och kanske ett glas till.', heat: 2, color: 'var(--c-plum)', fg: 'var(--on-dark)', cards: [
+    'läst någon annans dagbok', 'snokat i någons mobil', 'snattat', 'hittat på en död släkting för att slippa något',
+    'gett bort en present jag själv fått', 'sagt att jag älskade en present som jag hatade',
+    'hållit en hemlighet för min bästa vän i över ett år', 'avslöjat en hemlighet jag lovat att hålla',
+    'läst andras sms över axeln', 'tjuvlyssnat genom en vägg', 'smitit från notan på en restaurang',
+    'lånat något och aldrig lämnat tillbaka det', 'tagit pengar ur mina föräldrars plånbok',
+    'skyllt något jag gjort på ett syskon', 'haft sönder något hemma hos någon och tigit om det',
+    'ljugit för en läkare', 'fastnat i en lögn som bara växte och växte', 'gråtit mig ur en parkeringsbot',
+    'skyllt på husdjuret', 'varit avundsjuk på en väns lycka', 'låtsats vara sjuk för att slippa en fest',
+    'bett en kompis ljuga för mig', 'hittat pengar och behållit dem', 'tittat på slutet av en serie i smyg innan min partner',
+    'snackat skit om någon i det här rummet', 'haft en crush på någon i det här rummet', 'ljugit i det här spelet',
+    'gjort något som ingen i det här rummet vet om', 'kollat in någon annans webbhistorik',
+    'sagt ”jag är på väg” när jag inte ens lämnat soffan'
+  ]},
+  { id: 'vagat', name: 'Vågat 18+', blurb: 'För vuxna med självdistans och dörren stängd.', heat: 3, color: 'var(--c-night)', fg: 'var(--on-dark)', night: true, cards: [
+    'skickat en nakenbild', 'legat med någon samma dag som vi träffades', 'haft sex utomhus', 'legat med ett ex',
+    'blivit påkommen mitt i akten', 'haft sex på ett tåg, flyg eller en båt', 'haft en trekant', 'fejkat en orgasm',
+    'haft sex på jobbet', 'använt handbojor', 'glömt namnet på någon jag legat med', 'haft sex i någon annans säng',
+    'handlat i en sexbutik', 'tittat på porr tillsammans med någon', 'haft telefonsex', 'haft ett friends with benefits',
+    'legat med en kollega', 'smugit ut någon ur mitt rum på morgonen', 'haft sex i en provhytt',
+    'skämts över min egen sökhistorik', 'vaknat bredvid någon och ångrat mig direkt', 'haft sex i en bil',
+    'sextat med fel person', 'blivit kär i ett one night stand', 'testat rollspel i sängen', 'varit på en strippklubb',
+    'legat med någon i det här rummet', 'haft sex på en fest medan festen pågick',
+    'tappat ett klädesplagg och aldrig hittat det igen', 'haft sex mer än tre gånger på en dag'
+  ]}
+];
+
+const RULES = [
+  { title: 'Pekleken', text: 'På tre pekar alla på den som mest troligt har gjort något riktigt dumt i år. Den med flest fingrar riktade mot sig {straff}.', tap: true },
+  { title: 'Vattenpaus', text: 'Alla dricker ett glas vatten. På riktigt. Morgondagens du tackar.', tap: false },
+  { title: 'Byt plats', text: 'Alla reser sig och sätter sig bredvid någon ny. Inga straff, bara kaos.', tap: false },
+  { title: 'Din tur', text: 'Den som ligger sämst till hittar på nästa påstående själv. Alla som har gjort det {straff}.', tap: true },
+  { title: 'Historien, tack', text: 'Den som åkte dit senast har 30 sekunder på sig att berätta en historia. Gruppen dömer: tråkig historia betyder att hen {straff}.', tap: true },
+  { title: 'Tystnad', text: 'Ingen får säga ett ord på 60 sekunder. Den som bryter tystnaden {straff}.', tap: true },
+  { title: 'Två sanningar, en lögn', text: 'Den som klarat sig bäst berättar tre saker om sig själv. Rätt gissning på lögnen och hen {straff}. Fel gissning och alla andra {straff}.', tap: true },
+  { title: 'Snabbrunda', text: 'Gå laget runt. Alla säger ett eget ”jag har aldrig”. Den som tvekar mer än tre sekunder {straff}.', tap: true },
+  { title: 'Ärlighetspriset', text: 'Utse den som varit ärligast hittills. Hen väljer någon som {straff}.', tap: true },
+  { title: 'Ögonkontakt', text: 'Alla tittar ner. På tre tittar alla upp på någon. Två som möter varandras blickar {straff} var.', tap: true }
+];
+
+const CUSTOM_DECK = { id: 'egna', name: 'Era egna', heat: 0, color: 'var(--paper)', fg: 'var(--on-color)' };
+const PLAYER_COLORS = ['var(--c-yellow)', 'var(--c-sky)', 'var(--c-mint)', 'var(--c-pink)', 'var(--c-orange)', 'var(--c-violet)', 'var(--c-red)'];
+const HEAT_NAMES = ['', 'Mild', 'Pikant', 'Vågat'];
+const KEY = 'jag-har-aldrig:v1';
+const MAX_PLAYERS = 12;
+const ICON_X = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8"/></svg>';
+const ICON_CHECK = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 6.3l2.4 2.4 5.2-5.4"/></svg>';
+const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+/* ================= Tillstånd ================= */
+let S;            // inställningar som överlever mellan spel
+let G = null;     // pågående spel: { cards, i, max, marks: { kortindex: [spelar-id] } }
+let view = 'setup';
+let busy = false;
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+function defaults() {
+  return { players: [], nextId: 1, mode: 'fingers', fingers: 5, twists: true, decks: DECKS.filter(d => d.heat <= 2).map(d => d.id), custom: [] };
+}
+function load(data) {
+  let saved = data && data.S ? data : null;
+  if (!saved) { try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { saved = null; } }
+  S = Object.assign(defaults(), (saved && saved.S) || {});
+  S.decks = S.decks.filter(id => DECKS.some(d => d.id === id));
+  G = saved && saved.G && Array.isArray(saved.G.cards) && saved.G.cards.length ? saved.G : null;
+  view = (saved && saved.view) || 'setup';
+  if (!G) view = 'setup';
+  if (view === 'results' && S.players.length < 2) view = 'play';
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify({ S, G, view })); } catch (e) { /* privat läge: spelet funkar ändå */ }
+}
+
+const deckById = id => DECKS.find(d => d.id === id) || CUSTOM_DECK;
+const poolSize = () => DECKS.filter(d => S.decks.includes(d.id)).reduce((n, d) => n + d.cards.length, 0) + S.custom.length;
+const straff = () => (S.mode === 'fingers' ? 'fäller ett finger' : 'får en synd');
+const ruleText = r => r.text.replace(/\{straff\}/g, straff());
+const canTap = c => c.k === 's' || RULES[c.r].tap;
+const weightAt = i => { const c = G.cards[i]; return c && c.k === 's' && c.m === 'x2' ? 2 : 1; };
+const heatHTML = h => `<span class="heat" title="${HEAT_NAMES[h] || ''}"><i class="on"></i><i${h >= 2 ? ' class="on"' : ''}></i><i${h >= 3 ? ' class="on"' : ''}></i><span class="sr">${HEAT_NAMES[h] || ''}</span></span>`;
+const listNames = arr => arr.length < 2 ? arr.join('') : `${arr.slice(0, -1).join(', ')} och ${arr[arr.length - 1]}`;
+
+function lostFor(pid, except = -1) {
+  let n = 0;
+  for (const k in G.marks) {
+    const i = +k;
+    if (i !== except && G.marks[k].includes(pid)) n += weightAt(i);
+  }
+  return n;
+}
+const leftFor = pid => Math.max(0, S.fingers - lostFor(pid));
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function buildCards(fresh) {
+  const pool = [];
+  DECKS.forEach(d => { if (S.decks.includes(d.id)) d.cards.forEach(t => pool.push({ k: 's', d: d.id, t })); });
+  S.custom.forEach(t => pool.push({ k: 's', d: 'egna', t }));
+  shuffle(pool);
+  if (!S.twists || !pool.length) return pool;
+  const out = [];
+  const rules = shuffle(RULES.map((_, i) => i));
+  let gap = rand(7, 10), ri = 0;
+  pool.forEach((c, i) => {
+    if (!(fresh && i < 3)) {
+      const r = Math.random();
+      if (r < 0.07) c.m = 'x2'; else if (r < 0.13) c.m = 'inv';
+    }
+    out.push(c);
+    if (--gap === 0) { out.push({ k: 'r', r: rules[ri++ % rules.length] }); gap = rand(8, 12); }
+  });
+  return out;
+}
+function newGame() { G = { cards: buildCards(true), i: 0, max: 0, marks: {} }; }
+
+function cleanStatement(raw) {
+  let t = raw.trim().replace(/\s+/g, ' ').replace(/^jag har aldrig[\s.…:,-]*/i, '').replace(/[.!]+$/, '');
+  if (t.length > 1 && t[0] !== t[0].toLowerCase() && t[1] === t[1].toLowerCase()) t = t[0].toLowerCase() + t.slice(1);
+  return t;
+}
+
+/* ================= Vyer ================= */
+function show(v) {
+  view = v;
+  ['setup', 'play', 'results'].forEach(id => { $('#view-' + id).hidden = id !== v; });
+  if (v === 'setup') renderSetup();
+  if (v === 'play') { renderPlay(); keepAwake(); }
+  if (v === 'results') renderResults();
+  save();
+}
+
+/* ---------- Start ---------- */
+function renderSetup() {
+  const total = DECKS.reduce((n, d) => n + d.cards.length, 0);
+  $('#facts').textContent = `${total} påståenden · ${DECKS.length} kortlekar · ${RULES.length} regelkort`;
+  $('#resume').hidden = !G;
+  if (G) $('#resume-meta').textContent = `Kort ${G.i + 1}` + (S.players.length ? ` · ${S.players.length} spelare` : '');
+  renderPlayerList(); renderLevel(); renderDecks(); renderCustom(); renderRules(); renderCta();
+}
+function renderPlayerList() {
+  $('#player-list').innerHTML = S.players.map(p =>
+    `<li class="chip" style="--pc:${p.color}"><span class="dot"></span><span class="chip-name">${esc(p.name)}</span><button type="button" class="chip-x" data-remove-player="${p.id}" aria-label="Ta bort ${esc(p.name)}">${ICON_X}</button></li>`
+  ).join('');
+  $('#player-empty').hidden = S.players.length > 0;
+  $('#player-count').textContent = S.players.length ? `${S.players.length} av ${MAX_PLAYERS}` : '';
+  if (G) $('#resume-meta').textContent = `Kort ${G.i + 1}` + (S.players.length ? ` · ${S.players.length} spelare` : '');
+}
+function currentLevel() {
+  for (const lv of [1, 2, 3]) {
+    const ids = DECKS.filter(d => d.heat <= lv).map(d => d.id);
+    if (ids.length === S.decks.length && ids.every(id => S.decks.includes(id))) return lv;
+  }
+  return 0;
+}
+function renderLevel() {
+  const lv = currentLevel();
+  $$('#level-seg [data-level]').forEach(b => {
+    const on = +b.dataset.level === lv;
+    b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on));
+  });
+  $('#deck-count').textContent = (lv ? '' : 'Eget urval · ') + `${S.decks.length} av ${DECKS.length} lekar`;
+}
+function renderDecks() {
+  const focused = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.deck : null;
+  $('#deck-grid').innerHTML = DECKS.map(d => {
+    const on = S.decks.includes(d.id);
+    return `<button type="button" class="deck${on ? ' on' : ''}${d.night ? ' night' : ''}" data-deck="${d.id}" aria-pressed="${on}" style="--dc:${d.color};--dfg:${d.fg}">
+      <span class="deck-check" aria-hidden="true">${ICON_CHECK}</span>
+      <span class="deck-name">${esc(d.name)}</span>
+      <span class="deck-blurb">${esc(d.blurb)}</span>
+      <span class="deck-foot"><span>${d.cards.length} kort</span>${heatHTML(d.heat)}</span>
+    </button>`;
+  }).join('');
+  if (focused) { const b = document.querySelector(`[data-deck="${focused}"]`); if (b) b.focus(); }
+}
+function renderCustom() {
+  $('#custom-list').innerHTML = S.custom.map((t, i) =>
+    `<li><span><em>Jag har aldrig</em> ${esc(t)}</span><button type="button" class="chip-x" data-remove-custom="${i}" aria-label="Ta bort kortet">${ICON_X}</button></li>`
+  ).join('');
+  $('#custom-empty').hidden = S.custom.length > 0;
+  $('#custom-count').textContent = S.custom.length ? plural(S.custom.length, 'kort', 'kort') : '';
+}
+function setSeg(sel, key, val) {
+  $$(`${sel} [data-${key}]`).forEach(b => {
+    const on = b.dataset[key] === val;
+    b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on));
+  });
+}
+function renderRules() {
+  setSeg('#mode-seg', 'mode', S.mode);
+  setSeg('#finger-seg', 'fingers', String(S.fingers));
+  $('#finger-row').hidden = S.mode !== 'fingers';
+  $('#mode-desc').textContent = S.mode === 'fingers'
+    ? 'Fäll ett finger när du har gjort det. Slut på fingrar och du är ute. Sist kvar vinner.'
+    : 'Ingen åker ut. Varje erkännande blir en synd, och appen för register över hela kvällen.';
+  $('#twist-toggle').setAttribute('aria-checked', String(S.twists));
+}
+function renderCta() {
+  const n = poolSize();
+  $('#btn-start').disabled = n === 0;
+  $('#start-label').textContent = n ? (G ? 'Nytt spel' : 'Kör igång') : 'Välj minst en kortlek';
+  $('#start-meta').textContent = n ? `· ${n} kort` : '';
+}
+
+/* ---------- Spel ---------- */
+function cardHTML(c) {
+  if (c.k === 'r') {
+    const r = RULES[c.r];
+    return `<div class="tape" aria-hidden="true">Twist · Twist · Twist · Twist · Twist · Twist · Twist</div>
+      <span class="sr">Regelkort</span>
+      <h2 class="rule-title">${esc(r.title)}</h2>
+      <p class="rule-text">${esc(ruleText(r))}</p>`;
+  }
+  const d = deckById(c.d);
+  const len = c.t.length;
+  const size = len < 30 ? 'xl' : len < 56 ? 'l' : len < 84 ? 'm' : 's';
+  const stamp = c.m === 'x2' ? '<span class="stamp">Dubbelt <b>×2</b></span>' : c.m === 'inv' ? '<span class="stamp">Omvänt</span>' : '';
+  return `${stamp}
+    <div class="card-top"><span>${esc(d.name)}</span>${d.heat ? heatHTML(d.heat) : ''}</div>
+    <p class="eyebrow">Jag har aldrig…</p>
+    <p class="statement ${size}">${esc(c.t)}</p>`;
+}
+function renderPlay() {
+  const c = G.cards[G.i];
+  const card = $('#card');
+  const d = c.k === 's' ? deckById(c.d) : null;
+  card.className = 'card' + (c.k === 'r' ? ' rule' : '') + (d && d.night ? ' night' : '');
+  card.style.setProperty('--card-bg', d ? d.color : 'var(--paper)');
+  card.style.setProperty('--card-fg', d ? d.fg : 'var(--on-color)');
+  card.innerHTML = cardHTML(c);
+  ['#stack1', '#stack2'].forEach((sel, k) => {
+    const n = G.cards[G.i + 1 + k];
+    $(sel).style.setProperty('--stack-bg', n ? (n.k === 'r' ? 'var(--c-yellow)' : deckById(n.d).color) : 'var(--ground-2)');
+  });
+  $('#counter').textContent = `Kort ${G.i + 1}`;
+  $('#btn-prev').disabled = G.i === 0;
+  $('#next-label').textContent = G.i >= G.cards.length - 1 ? 'Blanda ny lek' : 'Nästa kort';
+  const hasPlayers = S.players.length > 0;
+  $('#view-play').classList.toggle('no-players', !hasPlayers);
+  $('#players-head').hidden = !hasPlayers;
+  $('#players').hidden = !hasPlayers;
+  if (hasPlayers) { renderTapHint(); renderPlayers(); }
+  renderVerdict();
+}
+function renderTapHint() {
+  const c = G.cards[G.i];
+  let html;
+  if (c.k === 'r') html = RULES[c.r].tap ? 'Tryck på den som åker dit' : 'Ingen åker dit på det här kortet';
+  else if (c.m === 'inv') html = 'Tryck på alla som <strong>inte</strong> har gjort det';
+  else html = 'Tryck på alla som har gjort det';
+  if (c.k === 's' && c.m === 'x2') html += S.mode === 'fingers' ? ' · <strong>kostar två fingrar</strong>' : ' · <strong>räknas dubbelt</strong>';
+  $('#tap-hint').innerHTML = html;
+  $('#legend').textContent = S.mode === 'fingers' ? `${S.fingers} fingrar var` : 'Syndaregister';
+}
+function fingerHeights(n) {
+  const hand = [0.52, 0.84, 1, 0.9, 0.68];
+  if (n === 3) return [0.84, 1, 0.9];
+  return Array.from({ length: n }, (_, i) => hand[i % 5]);
+}
+function renderPlayers() {
+  const wrap = $('#players');
+  const c = G.cards[G.i];
+  const tap = canTap(c);
+  const marks = G.marks[G.i] || [];
+  const w = weightAt(G.i);
+  const meterKey = S.mode + S.fingers;
+  [...wrap.children].forEach(n => { if (!S.players.some(p => p.id === n.dataset.id)) n.remove(); });
+  S.players.forEach(p => {
+    let b = wrap.querySelector(`[data-id="${p.id}"]`);
+    if (!b) {
+      b = document.createElement('button');
+      b.type = 'button'; b.className = 'player'; b.dataset.id = p.id;
+      b.innerHTML = '<span class="p-top"><span class="p-name"></span><span class="p-badge"></span></span><span class="p-meter"></span>';
+      wrap.appendChild(b);
+    }
+    b.style.setProperty('--pc', p.color);
+    b.querySelector('.p-name').textContent = p.name;
+    const marked = marks.includes(p.id);
+    const lostOther = lostFor(p.id, G.i);
+    const lost = lostOther + (marked ? w : 0);
+    const meter = b.querySelector('.p-meter');
+    const badge = b.querySelector('.p-badge');
+    if (S.mode === 'fingers') {
+      if (meter.dataset.key !== meterKey) {
+        meter.dataset.key = meterKey; meter.className = 'p-meter hand';
+        meter.innerHTML = fingerHeights(S.fingers).map((h, i) => `<i style="--h:${h}"${S.fingers >= 5 && i % 5 === 0 ? ' class="thumb"' : ''}></i>`).join('');
+      }
+      const left = Math.max(0, S.fingers - lost);
+      meter.querySelectorAll('i').forEach((f, i) => f.classList.toggle('down', i >= left));
+      b.classList.toggle('is-out', left === 0 && !marked);
+      b.disabled = !tap || (lostOther >= S.fingers && !marked);
+      badge.textContent = marked ? `−${w}` : left === 0 ? 'Ute' : '';
+      b.setAttribute('aria-label', `${p.name}, ${plural(left, 'finger', 'fingrar')} kvar`);
+    } else {
+      if (meter.dataset.key !== meterKey) {
+        meter.dataset.key = meterKey; meter.className = 'p-meter score';
+        meter.innerHTML = '<b></b><small></small>';
+      }
+      meter.querySelector('b').textContent = lost;
+      meter.querySelector('small').textContent = lost === 1 ? 'synd' : 'synder';
+      b.classList.remove('is-out');
+      b.disabled = !tap;
+      badge.textContent = marked ? `+${w}` : '';
+      b.setAttribute('aria-label', `${p.name}, ${plural(lost, 'synd', 'synder')}`);
+    }
+    b.classList.toggle('is-marked', marked);
+    b.setAttribute('aria-pressed', String(marked));
+  });
+}
+function renderVerdict() {
+  const v = $('#verdict');
+  const c = G.cards[G.i];
+  const marked = (G.marks[G.i] || []).map(id => S.players.find(p => p.id === id)).filter(Boolean);
+  const active = S.players.filter(p => S.mode !== 'fingers' || lostFor(p.id, G.i) < S.fingers).length;
+  let html = '';
+  if (S.players.length >= 2 && marked.length) {
+    const n = marked.length;
+    const first = `<b>${esc(marked[0].name)}</b>`;
+    if (c.k === 'r') html = `${listNames(marked.map(p => `<b>${esc(p.name)}</b>`))} åker dit.`;
+    else if (c.m === 'inv') html = n >= active ? 'Ingen har gjort det. Vilket oskyldigt gäng.' : n === 1 ? `Alla utom ${first} har gjort det.` : `${n} av ${active} har aldrig gjort det.`;
+    else html = n >= active ? 'Alla! Här finns inga oskyldiga.' : n === 1 ? `Bara ${first}. Historien, tack!` : `${n} av ${active} har gjort det.`;
+  }
+  v.innerHTML = html;
+  v.hidden = !html;
+}
+function toggleMark(pid) {
+  const arr = (G.marks[G.i] || []).slice();
+  const k = arr.indexOf(pid);
+  if (k >= 0) arr.splice(k, 1); else arr.push(pid);
+  if (arr.length) G.marks[G.i] = arr; else delete G.marks[G.i];
+  try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) { /* ingen vibration */ }
+  save(); renderPlayers(); renderVerdict();
+}
+function animateTo(dir, step) {
+  const card = $('#card');
+  if (reducedMotion) { step(); renderPlay(); return; }
+  busy = true;
+  const sign = dir === 'next' ? -1 : 1;
+  card.style.transform = `translateX(${sign * 115}%) rotate(${sign * 10}deg)`;
+  card.style.opacity = '0';
+  setTimeout(() => {
+    step(); renderPlay();
+    card.style.transition = 'none';
+    card.style.transform = 'translateY(16px) scale(.95)';
+    card.style.opacity = '0';
+    void card.offsetWidth;
+    card.style.transition = '';
+    card.style.transform = '';
+    card.style.opacity = '';
+    setTimeout(() => { busy = false; }, 160);
+  }, 190);
+}
+function next() {
+  if (busy) return;
+  if (S.mode === 'fingers' && S.players.length >= 2) {
+    const alive = S.players.filter(p => leftFor(p.id) > 0).length;
+    if (alive <= 1) { show('results'); return; }
+  }
+  if (G.i >= G.cards.length - 1) {
+    const more = buildCards(false);
+    if (!more.length) { show('setup'); return; }
+    G.cards.push(...more);
+  }
+  animateTo('next', () => { G.i++; G.max = Math.max(G.max, G.i); save(); });
+}
+function prev() {
+  if (busy || G.i === 0) return;
+  animateTo('prev', () => { G.i--; save(); });
+}
+
+let wakeLock = null;
+async function keepAwake() {
+  try {
+    if ('wakeLock' in navigator && document.visibilityState === 'visible' && !wakeLock) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) { wakeLock = null; }
+}
+
+/* ---------- Resultat ---------- */
+function renderResults() {
+  const fingers = S.mode === 'fingers';
+  const ps = S.players.map(p => ({ ...p, lost: lostFor(p.id), solo: 0 }));
+  ps.forEach(p => { p.left = Math.max(0, S.fingers - p.lost); });
+  let top = null;
+  for (const k in G.marks) {
+    const c = G.cards[k];
+    if (!c || c.k !== 's' || c.m === 'inv') continue;
+    const arr = G.marks[k].filter(id => ps.some(p => p.id === id));
+    if (arr.length === 1 && ps.length >= 3) ps.find(p => p.id === arr[0]).solo++;
+    if (arr.length && (!top || arr.length > top.n)) top = { c, n: arr.length };
+  }
+  const ranked = [...ps].sort(fingers ? (a, b) => b.left - a.left || a.lost - b.lost : (a, b) => b.lost - a.lost);
+  const best = ranked[0];
+  const leaders = ranked.filter(p => p.left === best.left && p.lost === best.lost);
+  const played = G.max + 1;
+  const total = ps.reduce((n, p) => n + p.lost, 0);
+  const alive = ps.filter(p => p.left > 0).length;
+  const shared = leaders.length > 1;
+  let eyebrow, title;
+  if (fingers) {
+    if (alive === 1) { eyebrow = 'Sist med fingrar kvar'; title = `${best.name} vinner!`; }
+    else if (alive === 0) { eyebrow = 'Alla åkte ut på samma kort'; title = shared ? 'Delad seger!' : `${best.name} vinner!`; }
+    else { eyebrow = 'Flest fingrar kvar just nu'; title = shared ? 'Delad ledning!' : `${best.name} leder!`; }
+  } else {
+    eyebrow = 'Längst syndaregister';
+    title = total === 0 ? 'Rena helgon!' : shared ? 'Delad skam!' : `${best.name}!`;
+  }
+  $('#res-eyebrow').textContent = eyebrow;
+  $('#res-title').textContent = title;
+  $('#res-sub').textContent = `${plural(played, 'kort', 'kort')} spelade · ` +
+    (fingers ? `${plural(total, 'fällt finger', 'fällda fingrar')}` : plural(total, 'synd', 'synder')) +
+    (shared && total ? ` · ${listNames(leaders.map(p => p.name))}` : '');
+
+  const maxLost = Math.max(1, ...ps.map(p => p.lost));
+  $('#ranking').innerHTML = ranked.map((p, i) => {
+    const pct = fingers ? (p.left / S.fingers) * 100 : (p.lost / maxLost) * 100;
+    const val = fingers ? (p.left ? `${plural(p.left, 'finger', 'fingrar')} kvar` : 'Ute') : plural(p.lost, 'synd', 'synder');
+    return `<li style="--pc:${p.color}"><span class="r-pos">${i + 1}</span><span class="r-main"><span class="r-name">${esc(p.name)}</span><span class="r-bar"><i style="width:${pct}%"></i></span></span><span class="r-val">${val}</span></li>`;
+  }).join('');
+
+  const awards = [];
+  if (total > 0) {
+    const unit = n => fingers ? plural(n, 'finger', 'fingrar') : plural(n, 'synd', 'synder');
+    const byLost = [...ps].sort((a, b) => a.lost - b.lost);
+    const saint = byLost[0], sinner = byLost[byLost.length - 1];
+    if (top) {
+      const d = deckById(top.c.d);
+      awards.push(`<div class="award top-card" style="--card-bg:${d.color};--card-fg:${d.fg}">
+        <span class="award-label">Kortet som fällde flest</span>
+        <p class="eyebrow">Jag har aldrig…</p>
+        <p class="tc-text">${esc(top.c.t)}</p>
+        <span class="award-detail">${top.n} av ${ps.length} hade gjort det</span></div>`);
+    }
+    awards.push(award('Helgonet', saint.name, saint.lost === 0 ? (fingers ? 'Fällde inte ett enda finger' : 'Inte en enda synd') : (fingers ? `Fällde bara ${unit(saint.lost)}` : `Bara ${unit(saint.lost)}`)));
+    if (sinner.lost > saint.lost) awards.push(award('Har gjort allt', sinner.name, fingers ? `Fällde ${unit(sinner.lost)}` : unit(sinner.lost)));
+    const lone = [...ps].sort((a, b) => b.solo - a.solo)[0];
+    if (lone && lone.solo > 0) awards.push(award('Ensamvargen', lone.name, `Ensam om ${plural(lone.solo, 'kort', 'kort')}`));
+    // Brickorna går två i bredd; fyll ut så ingen står ensam på sin rad
+    if ((awards.length - (top ? 1 : 0)) % 2) awards.push(award('Kvällen i siffror', plural(played, 'kort', 'kort'), `${fingers ? plural(total, 'fällt finger', 'fällda fingrar') : plural(total, 'synd', 'synder')} totalt`));
+  }
+  $('#awards').innerHTML = awards.join('');
+  $('#awards-label').hidden = !awards.length;
+  $('#awards').hidden = !awards.length;
+}
+function award(label, name, detail) {
+  return `<div class="award"><span class="award-label">${esc(label)}</span><span class="award-name">${esc(name)}</span><span class="award-detail">${esc(detail)}</span></div>`;
+}
+
+/* ================= Händelser ================= */
+function bind() {
+  $('#player-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const inp = $('#player-input');
+    const msg = $('#player-msg');
+    const name = inp.value.trim().replace(/\s+/g, ' ');
+    if (!name) return;
+    if (S.players.length >= MAX_PLAYERS) { msg.textContent = `Max ${MAX_PLAYERS} spelare får plats.`; return; }
+    if (S.players.some(p => p.name.toLowerCase() === name.toLowerCase())) { msg.textContent = `${name} är redan med. Lägg till en initial.`; return; }
+    const used = S.players.map(p => p.color);
+    const color = PLAYER_COLORS.find(c => !used.includes(c)) || PLAYER_COLORS[S.players.length % PLAYER_COLORS.length];
+    S.players.push({ id: 'p' + S.nextId++, name, color });
+    inp.value = ''; msg.textContent = '';
+    save(); renderPlayerList(); inp.focus();
+  });
+  $('#custom-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const inp = $('#custom-input');
+    const t = cleanStatement(inp.value);
+    if (!t) return;
+    if (!S.custom.includes(t)) S.custom.push(t);
+    inp.value = '';
+    save(); renderCustom(); renderCta(); inp.focus();
+  });
+  $('#view-setup').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    const ds = b.dataset;
+    if (ds.removePlayer) {
+      S.players = S.players.filter(p => p.id !== ds.removePlayer);
+      save(); renderPlayerList();
+    } else if (ds.level) {
+      const lv = +ds.level;
+      S.decks = DECKS.filter(d => d.heat <= lv).map(d => d.id);
+      save(); renderLevel(); renderDecks(); renderCta();
+    } else if (ds.deck) {
+      S.decks = S.decks.includes(ds.deck) ? S.decks.filter(id => id !== ds.deck) : [...S.decks, ds.deck];
+      save(); renderLevel(); renderDecks(); renderCta();
+    } else if ('removeCustom' in ds) {
+      S.custom.splice(+ds.removeCustom, 1);
+      save(); renderCustom(); renderCta();
+    } else if (ds.mode) {
+      S.mode = ds.mode; save(); renderRules();
+    } else if (ds.fingers) {
+      S.fingers = +ds.fingers; save(); renderRules();
+    } else if (b.id === 'twist-toggle') {
+      S.twists = !S.twists; save(); renderRules();
+    } else if (b.id === 'btn-start') {
+      newGame(); show('play');
+    } else if (b.id === 'btn-resume') {
+      show('play');
+    }
+  });
+
+  $('#players').addEventListener('click', e => {
+    const b = e.target.closest('.player');
+    if (b && !b.disabled) toggleMark(b.dataset.id);
+  });
+  $('#btn-next').addEventListener('click', next);
+  $('#btn-prev').addEventListener('click', prev);
+  $('#btn-menu').addEventListener('click', () => show('setup'));
+  $('#btn-end').addEventListener('click', () => show(S.players.length >= 2 ? 'results' : 'setup'));
+  $('#btn-back-game').addEventListener('click', () => show('play'));
+  $('#btn-menu2').addEventListener('click', () => show('setup'));
+  $('#btn-rematch').addEventListener('click', () => { newGame(); show('play'); });
+
+  // Svep: vänster = nästa, höger = förra
+  const card = $('#card');
+  let sx = null, sy = 0, dx = 0;
+  card.addEventListener('pointerdown', e => {
+    if (busy || e.button > 0) return;
+    sx = e.clientX; sy = e.clientY; dx = 0;
+    card.style.transition = 'none';
+  });
+  card.addEventListener('pointermove', e => {
+    if (sx === null) return;
+    dx = e.clientX - sx;
+    if (Math.abs(dx) < Math.abs(e.clientY - sy) && Math.abs(dx) < 12) return;
+    card.style.transform = `translateX(${dx}px) rotate(${dx / 22}deg)`;
+  });
+  const endDrag = () => {
+    if (sx === null) return;
+    sx = null;
+    card.style.transition = '';
+    if (dx < -70 && !busy) next();
+    else if (dx > 70 && !busy && G.i > 0) prev();
+    else card.style.transform = '';
+    dx = 0;
+  };
+  card.addEventListener('pointerup', endDrag);
+  card.addEventListener('pointercancel', endDrag);
+  card.addEventListener('pointerleave', endDrag);
+
+  document.addEventListener('keydown', e => {
+    if (view !== 'play' || e.target.closest('button, input, textarea, summary')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+  document.addEventListener('visibilitychange', () => { if (view === 'play') keepAwake(); });
+}
+
+function boot(data) {
+  load(data);
+  bind();
+  show(view);
+}
+try { if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ S, G, view })); } catch (e) { /* utanför Claude */ }
+if (window.claude && window.claude.hot && window.claude.hot.ready) window.claude.hot.ready(boot);
+else boot((window.claude && window.claude.hot && window.claude.hot.data) || {});
+})();
+</script>
+<!-- artifact:end -->
+</body>
+</html>
