@@ -330,6 +330,34 @@ button:disabled { cursor: default; }
 }
 .sticker b { font-family: var(--font-display); font-weight: 400; }
 @keyframes pop { from { transform: rotate(-2.5deg) scale(.6); opacity: 0; } }
+.sticker button {
+  border: 0; border-radius: 999px; padding: .28rem .7rem; margin-left: .3rem; vertical-align: middle;
+  font-family: var(--font-body); font-weight: 700; font-size: .84rem; line-height: 1.2;
+  background: var(--on-color); color: var(--accent);
+}
+.sticker button.ghost { background: transparent; color: var(--on-color); box-shadow: inset 0 0 0 1.5px var(--on-color); }
+.sticker .clock {
+  display: inline-block; min-width: 2.7em; margin-left: .15rem; padding: 0 .35rem; border-radius: 6px; text-align: center;
+  background: var(--on-color); color: var(--accent); font-variant-numeric: tabular-nums;
+}
+.stage.has-sticker .card { padding-bottom: 66px; }
+.card.night .tape { background: var(--c-pink); }
+
+.knockout {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; text-align: center; cursor: pointer;
+  background: color-mix(in srgb, var(--ground) 86%, transparent); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.ko-stamp {
+  display: inline-block; padding: .04em .3em .14em; border: .07em solid currentColor; border-radius: .18em;
+  font-family: var(--font-display); font-size: clamp(4.5rem, 26vw, 8rem); line-height: 1;
+  color: var(--accent); text-shadow: .04em .04em 0 var(--offset); transform: rotate(-11deg);
+}
+.knockout.show .ko-stamp { animation: slam .42s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes slam { from { transform: rotate(-24deg) scale(2.6); opacity: 0; } 60% { opacity: 1; } }
+.ko-name { margin: 28px 0 4px; font-size: 1.6rem; font-weight: 700; overflow-wrap: anywhere; }
+.ko-sub { margin: 0; color: var(--ink-soft); font-size: 1.05rem; }
+.ko-hint { margin: 24px 0 0; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.confetti { position: fixed; inset: 0; z-index: 60; width: 100%; height: 100%; pointer-events: none; }
 
 .players-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-inline: 2px; }
 .tap-hint { font-weight: 600; font-size: .92rem; }
@@ -480,6 +508,13 @@ button:disabled { cursor: default; }
         </div>
         <div class="row">
           <span class="row-text">
+            <span class="row-label" id="escalate-label">Stegrande hetta</span>
+            <span class="note">Kvällen börjar snällt och blir hetare ju längre ni spelar.</span>
+          </span>
+          <button type="button" class="switch" id="escalate-toggle" role="switch" aria-checked="true" aria-labelledby="escalate-label"><span class="knob"></span></button>
+        </div>
+        <div class="row">
+          <span class="row-text">
             <span class="row-label" id="twist-label">Twistkort</span>
             <span class="note">Dubbla straff, omvända kort och regler som ställer till det.</span>
           </span>
@@ -492,10 +527,11 @@ button:disabled { cursor: default; }
         <ol>
           <li>En läser kortet högt: ”Jag har aldrig …”</li>
           <li>Alla som <b>har</b> gjort det fäller ett finger. Tryck på deras namn.</li>
-          <li>Var det bara en? Då vill alla höra historien.</li>
+          <li>Var det bara en? Starta klockan. Hen har 30 sekunder på sig att berätta historien, och den som vägrar fäller ett finger till.</li>
           <li>Slut på fingrar och du är ute. Sist kvar vinner.</li>
         </ol>
         <p><b>Dubbelt</b> kostar två fingrar. <b>Omvänt</b> betyder att de som inte har gjort det fäller. <b>Regelkort</b> dyker upp ungefär vart tionde kort.</p>
+        <p>Med <b>stegrande hetta</b> börjar kvällen med milda kort, och de hetare lekarna blandas in efter hand. Kort ni redan har spelat hamnar sist i leken nästa gång.</p>
         <p>Svep kortet åt vänster för nästa och åt höger för att backa. Tryckte någon fel? Tryck igen så ångras det.</p>
       </details>
     </div>
@@ -516,7 +552,7 @@ button:disabled { cursor: default; }
         <div class="stack s2" id="stack2" aria-hidden="true"></div>
         <div class="stack s1" id="stack1" aria-hidden="true"></div>
         <article class="card" id="card" aria-live="polite" aria-atomic="true"></article>
-        <p class="sticker" id="verdict" role="status" hidden></p>
+        <div class="sticker" id="verdict" aria-live="polite" hidden></div>
       </div>
       <div class="players-head" id="players-head">
         <span class="tap-hint" id="tap-hint"></span>
@@ -551,6 +587,15 @@ button:disabled { cursor: default; }
       <button type="button" class="btn btn-accent btn-big" id="btn-rematch">Ny runda, samma gäng</button>
     </footer>
   </section>
+</div>
+
+<div class="knockout" id="knockout" role="alert" hidden>
+  <div>
+    <span class="ko-stamp">Ute!</span>
+    <p class="ko-name" id="ko-name"></p>
+    <p class="ko-sub" id="ko-sub"></p>
+    <p class="ko-hint">Tryck för att fortsätta</p>
+  </div>
 </div>
 
 <script>
@@ -765,7 +810,11 @@ const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 
 function defaults() {
-  return { players: [], nextId: 1, mode: 'fingers', fingers: 5, twists: true, decks: DECKS.filter(d => d.heat <= 2).map(d => d.id), custom: [], known: DECKS.map(d => d.id) };
+  return {
+    players: [], nextId: 1, mode: 'fingers', fingers: 5, twists: true, escalate: true,
+    decks: DECKS.filter(d => d.heat <= 2).map(d => d.id), custom: [], known: DECKS.map(d => d.id),
+    seen: {}, seenN: 0   // kort-text -> när det senast visades, så att nästa fest börjar med nya kort
+  };
 }
 // Kortlekarna som fanns innan inställningarna började minnas vilka lekar de sett
 const FIRST_DECKS = ['klassiker', 'pinsamt', 'svenskt', 'skarm', 'resor', 'jobb', 'fest', 'dejting', 'hemligt', 'vagat'];
@@ -792,8 +841,10 @@ const deckById = id => DECKS.find(d => d.id === id) || CUSTOM_DECK;
 const poolSize = () => DECKS.filter(d => S.decks.includes(d.id)).reduce((n, d) => n + d.cards.length, 0) + S.custom.length;
 const straff = () => (S.mode === 'fingers' ? 'fäller ett finger' : 'får en synd');
 const ruleText = r => r.text.replace(/\{straff\}/g, straff());
-const canTap = c => c.k === 's' || RULES[c.r].tap;
+const canTap = c => c.k === 's' || (c.k === 'r' && RULES[c.r].tap);
 const weightAt = i => { const c = G.cards[i]; return c && c.k === 's' && c.m === 'x2' ? 2 : 1; };
+const penAt = (i, pid) => (G.pen && G.pen[i] && G.pen[i][pid]) || 0;
+const vibrate = pattern => { try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (e) { /* ingen vibration */ } };
 const heatHTML = h => `<span class="heat" title="${HEAT_NAMES[h] || ''}"><i class="on"></i><i${h >= 2 ? ' class="on"' : ''}></i><i${h >= 3 ? ' class="on"' : ''}></i><span class="sr">${HEAT_NAMES[h] || ''}</span></span>`;
 const listNames = arr => arr.length < 2 ? arr.join('') : `${arr.slice(0, -1).join(', ')} och ${arr[arr.length - 1]}`;
 
@@ -803,6 +854,7 @@ function lostFor(pid, except = -1) {
     const i = +k;
     if (i !== except && G.marks[k].includes(pid)) n += weightAt(i);
   }
+  for (const k in G.pen || {}) { if (+k !== except) n += G.pen[k][pid] || 0; }
   return n;
 }
 const leftFor = pid => Math.max(0, S.fingers - lostFor(pid));
@@ -811,27 +863,80 @@ function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
-function buildCards(fresh) {
-  const pool = [];
-  DECKS.forEach(d => { if (S.decks.includes(d.id)) d.cards.forEach(t => pool.push({ k: 's', d: d.id, t })); });
-  S.custom.forEach(t => pool.push({ k: 's', d: 'egna', t }));
-  shuffle(pool);
-  if (!S.twists || !pool.length) return pool;
+// Kort som aldrig visats först, sedan de som visades för längst sedan
+function bySeen(arr) {
+  const unseen = shuffle(arr.filter(c => !S.seen[c.t]));
+  const seen = arr.filter(c => S.seen[c.t]).sort((a, b) => S.seen[a.t] - S.seen[b.t]);
+  return unseen.concat(seen);
+}
+// Hur gärna varje hettanivå dras vid kort nummer n. rank 0 är den mildaste valda nivån.
+function heatWeight(rank, n) {
+  const warm = Math.min(1, Math.max(0, (n - 8) / 16));   // nivå två smyger in efter kort 8
+  const hot = Math.min(1, Math.max(0, (n - 22) / 16));   // nivå tre efter kort 22
+  if (rank === 0) return 1 - 0.65 * warm - 0.15 * hot;
+  if (rank === 1) return warm * (1 - 0.3 * hot);
+  return hot;
+}
+// startAt = hur många kort som redan ligger i leken (0 för ett nytt spel)
+function buildCards(startAt) {
+  const fresh = startAt === 0;
+  const piles = new Map();
+  DECKS.forEach(d => {
+    if (!S.decks.includes(d.id)) return;
+    if (!piles.has(d.heat)) piles.set(d.heat, []);
+    d.cards.forEach(t => piles.get(d.heat).push({ k: 's', d: d.id, t }));
+  });
+  const heats = [...piles.keys()].sort((a, b) => a - b);
+  const escalating = S.escalate && heats.length > 1;
+  let seq = [];
+  if (escalating) {
+    heats.forEach(h => piles.set(h, bySeen(piles.get(h))));
+    for (let n = startAt; heats.some(h => piles.get(h).length); n++) {
+      const open = heats.filter(h => piles.get(h).length);
+      const w = open.map(h => Math.max(0, heatWeight(heats.indexOf(h), n)));
+      const sum = w.reduce((a, b) => a + b, 0);
+      let pick = open[0];
+      if (sum > 0) { let r = Math.random() * sum; pick = open.find((h, j) => (r -= w[j]) < 0) || open[open.length - 1]; }
+      seq.push(piles.get(pick).shift());
+    }
+  } else {
+    seq = bySeen(heats.flatMap(h => piles.get(h)));
+  }
+  // Era egna kort sprids ut bland de första korten så att de hinner komma upp under kvällen
+  bySeen(S.custom.map(t => ({ k: 's', d: 'egna', t }))).forEach(c => {
+    const hi = Math.min(seq.length, 50);
+    seq.splice(rand(Math.min(fresh ? 2 : 0, hi), hi), 0, c);
+  });
+  // Ett eget kort markerar övergången till 18+
+  if (fresh && escalating && heats.includes(3)) {
+    const at = seq.findIndex(c => c.k === 's' && deckById(c.d).heat === 3);
+    if (at > 0) seq.splice(at, 0, { k: 'z' });
+  }
+  if (!S.twists || !seq.length) return seq;
+
+  const maxHeat = heats.length ? heats[heats.length - 1] : 0;
+  const tame = shuffle(RULES.map((_, i) => i).filter(i => !RULES[i].heat));
+  const spicy = shuffle(RULES.map((_, i) => i).filter(i => RULES[i].heat && RULES[i].heat <= maxHeat));
+  let hot = !escalating || !fresh;   // 18+-regler väntar tills 18+-korten har börjat
+  const nextRule = () => { const q = hot && spicy.length && Math.random() < 0.5 ? spicy : tame; const r = q.shift(); q.push(r); return r; };
   const out = [];
-  const maxHeat = Math.max(0, ...DECKS.filter(d => S.decks.includes(d.id)).map(d => d.heat));
-  const rules = shuffle(RULES.map((_, i) => i).filter(i => !RULES[i].heat || RULES[i].heat <= maxHeat));
-  let gap = rand(7, 10), ri = 0;
-  pool.forEach((c, i) => {
-    if (!(fresh && i < 3)) {
+  let gap = rand(7, 10);
+  seq.forEach((c, i) => {
+    if (c.k === 'z' || (c.k === 's' && deckById(c.d).heat === 3)) hot = true;
+    if (c.k === 's' && !(fresh && i < 3)) {
       const r = Math.random();
       if (r < 0.07) c.m = 'x2'; else if (r < 0.13) c.m = 'inv';
     }
     out.push(c);
-    if (--gap === 0) { out.push({ k: 'r', r: rules[ri++ % rules.length] }); gap = rand(8, 12); }
+    if (--gap === 0) { out.push({ k: 'r', r: nextRule() }); gap = rand(8, 12); }
   });
   return out;
 }
-function newGame() { G = { cards: buildCards(true), i: 0, max: 0, marks: {} }; }
+function newGame() {
+  stopStory();
+  G = { cards: buildCards(0), i: 0, max: 0, marks: {}, pen: {} };
+  G.warmup = S.escalate && new Set(DECKS.filter(d => S.decks.includes(d.id)).map(d => d.heat)).size > 1;
+}
 
 function cleanStatement(raw) {
   let t = raw.trim().replace(/\s+/g, ' ').replace(/^jag har aldrig[\s.…:,-]*/i, '').replace(/[.!]+$/, '');
@@ -843,6 +948,7 @@ function cleanStatement(raw) {
 function show(v) {
   view = v;
   ['setup', 'play', 'results'].forEach(id => { $('#view-' + id).hidden = id !== v; });
+  if (v !== 'play') { stopStory(); hideKnockout(); }
   if (v === 'setup') renderSetup();
   if (v === 'play') { renderPlay(); keepAwake(); }
   if (v === 'results') renderResults();
@@ -914,16 +1020,25 @@ function renderRules() {
     ? 'Fäll ett finger när du har gjort det. Slut på fingrar och du är ute. Sist kvar vinner.'
     : 'Ingen åker ut. Varje erkännande blir en synd, och appen för register över hela kvällen.';
   $('#twist-toggle').setAttribute('aria-checked', String(S.twists));
+  $('#escalate-toggle').setAttribute('aria-checked', String(S.escalate));
 }
 function renderCta() {
   const n = poolSize();
+  const unseen = DECKS.filter(d => S.decks.includes(d.id)).reduce((k, d) => k + d.cards.filter(t => !S.seen[t]).length, 0)
+    + S.custom.filter(t => !S.seen[t]).length;
   $('#btn-start').disabled = n === 0;
   $('#start-label').textContent = n ? (G ? 'Nytt spel' : 'Kör igång') : 'Välj minst en kortlek';
-  $('#start-meta').textContent = n ? `· ${n} kort` : '';
+  $('#start-meta').textContent = !n ? '' : unseen === n || unseen === 0 ? `· ${n} kort` : `· ${unseen} av ${n} nya`;
 }
 
 /* ---------- Spel ---------- */
 function cardHTML(c) {
+  if (c.k === 'z') {
+    return `<div class="tape" aria-hidden="true">18+ · 18+ · 18+ · 18+ · 18+ · 18+ · 18+ · 18+ · 18+ · 18+</div>
+      <span class="sr">Nu börjar 18+</span>
+      <h2 class="rule-title">Dörren stängs</h2>
+      <p class="rule-text">Uppvärmningen är över. Härifrån blandas Vågat 18+ in i leken. Fyll på glasen.</p>`;
+  }
   if (c.k === 'r') {
     const r = RULES[c.r];
     return `<div class="tape" aria-hidden="true">Twist · Twist · Twist · Twist · Twist · Twist · Twist</div>
@@ -944,15 +1059,17 @@ function renderPlay() {
   const c = G.cards[G.i];
   const card = $('#card');
   const d = c.k === 's' ? deckById(c.d) : null;
-  card.className = 'card' + (c.k === 'r' ? ' rule' : '') + (d && d.night ? ' night' : '');
-  card.style.setProperty('--card-bg', d ? d.color : 'var(--paper)');
-  card.style.setProperty('--card-fg', d ? d.fg : 'var(--on-color)');
+  const zone = c.k === 'z';
+  card.className = 'card' + (c.k !== 's' ? ' rule' : '') + ((d && d.night) || zone ? ' night' : '');
+  card.style.setProperty('--card-bg', d ? d.color : zone ? 'var(--c-night)' : 'var(--paper)');
+  card.style.setProperty('--card-fg', d ? d.fg : zone ? 'var(--on-dark)' : 'var(--on-color)');
   card.innerHTML = cardHTML(c);
   ['#stack1', '#stack2'].forEach((sel, k) => {
     const n = G.cards[G.i + 1 + k];
-    $(sel).style.setProperty('--stack-bg', n ? (n.k === 'r' ? 'var(--c-yellow)' : deckById(n.d).color) : 'var(--ground-2)');
+    $(sel).style.setProperty('--stack-bg', !n ? 'var(--ground-2)' : n.k === 'r' ? 'var(--c-yellow)' : n.k === 'z' ? 'var(--c-night)' : deckById(n.d).color);
   });
-  $('#counter').textContent = `Kort ${G.i + 1}`;
+  if (c.k === 's') { S.seen[c.t] = ++S.seenN; save(); }
+  $('#counter').textContent = `Kort ${G.i + 1}` + (G.warmup && G.i < 8 ? ' · Uppvärmning' : '');
   $('#btn-prev').disabled = G.i === 0;
   $('#next-label').textContent = G.i >= G.cards.length - 1 ? 'Blanda ny lek' : 'Nästa kort';
   const hasPlayers = S.players.length > 0;
@@ -965,7 +1082,8 @@ function renderPlay() {
 function renderTapHint() {
   const c = G.cards[G.i];
   let html;
-  if (c.k === 'r') html = RULES[c.r].tap ? 'Tryck på den som åker dit' : 'Ingen åker dit på det här kortet';
+  if (c.k === 'z') html = 'Ingen åker dit på det här kortet';
+  else if (c.k === 'r') html = RULES[c.r].tap ? 'Tryck på den som åker dit' : 'Ingen åker dit på det här kortet';
   else if (c.m === 'inv') html = 'Tryck på alla som <strong>inte</strong> har gjort det';
   else html = 'Tryck på alla som har gjort det';
   if (c.k === 's' && c.m === 'x2') html += S.mode === 'fingers' ? ' · <strong>kostar två fingrar</strong>' : ' · <strong>räknas dubbelt</strong>';
@@ -997,7 +1115,8 @@ function renderPlayers() {
     b.querySelector('.p-name').textContent = p.name;
     const marked = marks.includes(p.id);
     const lostOther = lostFor(p.id, G.i);
-    const lost = lostOther + (marked ? w : 0);
+    const cost = (marked ? w : 0) + penAt(G.i, p.id);   // vad det här kortet kostar spelaren
+    const lost = lostOther + cost;
     const meter = b.querySelector('.p-meter');
     const badge = b.querySelector('.p-badge');
     if (S.mode === 'fingers') {
@@ -1009,7 +1128,7 @@ function renderPlayers() {
       meter.querySelectorAll('i').forEach((f, i) => f.classList.toggle('down', i >= left));
       b.classList.toggle('is-out', left === 0 && !marked);
       b.disabled = !tap || (lostOther >= S.fingers && !marked);
-      badge.textContent = marked ? `−${w}` : left === 0 ? 'Ute' : '';
+      badge.textContent = cost ? `−${cost}` : left === 0 ? 'Ute' : '';
       b.setAttribute('aria-label', `${p.name}, ${plural(left, 'finger', 'fingrar')} kvar`);
     } else {
       if (meter.dataset.key !== meterKey) {
@@ -1020,7 +1139,7 @@ function renderPlayers() {
       meter.querySelector('small').textContent = lost === 1 ? 'synd' : 'synder';
       b.classList.remove('is-out');
       b.disabled = !tap;
-      badge.textContent = marked ? `+${w}` : '';
+      badge.textContent = cost ? `+${cost}` : '';
       b.setAttribute('aria-label', `${p.name}, ${plural(lost, 'synd', 'synder')}`);
     }
     b.classList.toggle('is-marked', marked);
@@ -1033,23 +1152,121 @@ function renderVerdict() {
   const marked = (G.marks[G.i] || []).map(id => S.players.find(p => p.id === id)).filter(Boolean);
   const active = S.players.filter(p => S.mode !== 'fingers' || lostFor(p.id, G.i) < S.fingers).length;
   let html = '';
-  if (S.players.length >= 2 && marked.length) {
+  // Bara en har gjort det: då är det dags för historien, med klocka
+  const solo = S.players.length >= 2 && c.k === 's' && c.m !== 'inv' && marked.length === 1 && marked.length < active ? marked[0] : null;
+  if (story && (!solo || story.idx !== G.i || story.pid !== solo.id)) stopStory();
+  if (solo) {
+    const name = `<b>${esc(solo.name)}</b>`;
+    const btn = (act, label, ghost) => `<button type="button" data-story="${act}" data-pid="${solo.id}"${ghost ? ' class="ghost"' : ''}>${label}</button>`;
+    if (penAt(G.i, solo.id)) html = `${name} vägrade. Det kostade ${S.mode === 'fingers' ? 'ett finger' : 'en synd'}. ${btn('undo', 'Ångra', true)}`;
+    else if (story && story.phase === 'run') html = `${name} berättar <span class="clock" id="story-time">${clock(storyLeft())}</span> ${btn('ok', 'Klar')}${btn('refuse', 'Vägrar', true)}`;
+    else if (story && story.phase === 'done') html = `Tiden är ute! Godkänt? ${btn('ok', 'Ja')}${btn('refuse', S.mode === 'fingers' ? 'Nej, fäll' : 'Nej, +1', true)}`;
+    else if (story && story.phase === 'ok') html = `${name} klarade sig. Snyggt berättat.`;
+    else html = `Bara ${name}. Historien, tack! ${btn('start', 'Starta 30 s')}`;
+  } else if (S.players.length >= 2 && marked.length) {
     const n = marked.length;
     const first = `<b>${esc(marked[0].name)}</b>`;
     if (c.k === 'r') html = `${listNames(marked.map(p => `<b>${esc(p.name)}</b>`))} åker dit.`;
     else if (c.m === 'inv') html = n >= active ? 'Ingen har gjort det. Vilket oskyldigt gäng.' : n === 1 ? `Alla utom ${first} har gjort det.` : `${n} av ${active} har aldrig gjort det.`;
-    else html = n >= active ? 'Alla! Här finns inga oskyldiga.' : n === 1 ? `Bara ${first}. Historien, tack!` : `${n} av ${active} har gjort det.`;
+    else html = n >= active ? 'Alla! Här finns inga oskyldiga.' : `${n} av ${active} har gjort det.`;
   }
   v.innerHTML = html;
   v.hidden = !html;
+  $('.stage').classList.toggle('has-sticker', !!html);
 }
+
+/* ---------- Berättarklockan ---------- */
+let story = null;   // { idx, pid, phase: 'run' | 'done' | 'ok', end, tick }
+const clock = s => `0:${String(s).padStart(2, '0')}`;
+const storyLeft = () => Math.max(0, Math.ceil((story.end - Date.now()) / 1000));
+function stopStory() {
+  if (story && story.tick) clearInterval(story.tick);
+  story = null;
+}
+function startStory(pid) {
+  stopStory();
+  story = { idx: G.i, pid, phase: 'run', end: Date.now() + 30000 };
+  story.tick = setInterval(() => {
+    const left = storyLeft();
+    const t = document.getElementById('story-time');
+    if (t) t.textContent = clock(left);
+    if (left === 0) {
+      clearInterval(story.tick); story.tick = null; story.phase = 'done';
+      vibrate([90, 60, 90]); renderVerdict();
+    }
+  }, 250);
+  renderVerdict();
+}
+function setPenalty(pid, on) {
+  const before = leftFor(pid);
+  G.pen = G.pen || {};
+  if (on) (G.pen[G.i] = G.pen[G.i] || {})[pid] = 1;
+  else if (G.pen[G.i]) { delete G.pen[G.i][pid]; if (!Object.keys(G.pen[G.i]).length) delete G.pen[G.i]; }
+  save(); renderPlayers(); renderVerdict();
+  checkKnockout(pid, before);
+}
+
 function toggleMark(pid) {
+  const before = leftFor(pid);
   const arr = (G.marks[G.i] || []).slice();
   const k = arr.indexOf(pid);
-  if (k >= 0) arr.splice(k, 1); else arr.push(pid);
+  if (k >= 0) {
+    arr.splice(k, 1);
+    if (G.pen && G.pen[G.i] && G.pen[G.i][pid]) { delete G.pen[G.i][pid]; if (!Object.keys(G.pen[G.i]).length) delete G.pen[G.i]; }
+  } else arr.push(pid);
   if (arr.length) G.marks[G.i] = arr; else delete G.marks[G.i];
-  try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) { /* ingen vibration */ }
+  vibrate(12);
   save(); renderPlayers(); renderVerdict();
+  checkKnockout(pid, before);
+}
+
+/* ---------- UTE! och konfetti ---------- */
+let koTimer = null;
+function checkKnockout(pid, before) {
+  if (S.mode === 'fingers' && S.players.length >= 2 && before > 0 && leftFor(pid) === 0) knockout(pid);
+}
+function knockout(pid) {
+  const p = S.players.find(x => x.id === pid);
+  if (!p) return;
+  const alive = S.players.filter(x => leftFor(x.id) > 0);
+  $('#ko-name').textContent = `${p.name} är ute.`;
+  $('#ko-sub').textContent = alive.length === 1 ? `${alive[0].name} står ensam kvar!`
+    : alive.length === 0 ? 'Ingen står kvar. Nästa kort avgör vem som klarade sig bäst.'
+    : `${plural(alive.length, 'spelare', 'spelare')} kvar i leken.`;
+  const ko = $('#knockout');
+  ko.hidden = false; ko.classList.remove('show'); void ko.offsetWidth; ko.classList.add('show');
+  vibrate([70, 50, 140]);
+  clearTimeout(koTimer); koTimer = setTimeout(hideKnockout, 2600);
+}
+function hideKnockout() { clearTimeout(koTimer); $('#knockout').hidden = true; }
+function celebrate() {
+  if (reducedMotion) return;
+  const cv = document.createElement('canvas');
+  cv.className = 'confetti'; cv.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(cv);
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr;
+  const ctx = cv.getContext('2d');
+  const css = getComputedStyle(document.documentElement);
+  const inks = ['--c-yellow', '--c-pink', '--c-mint', '--c-sky', '--c-violet', '--c-orange', '--accent'].map(v => css.getPropertyValue(v).trim() || '#FF4F9A');
+  const bits = Array.from({ length: 150 }, () => ({
+    x: Math.random() * W, y: -Math.random() * H * 0.6, vx: (Math.random() - .5) * 3 * dpr, vy: (2 + Math.random() * 4) * dpr,
+    r: Math.random() * Math.PI, vr: (Math.random() - .5) * .3, w: (6 + Math.random() * 6) * dpr, h: (10 + Math.random() * 8) * dpr,
+    c: inks[Math.floor(Math.random() * inks.length)]
+  }));
+  const t0 = performance.now();
+  (function frame(t) {
+    const age = t - t0;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = age > 2600 ? Math.max(0, 1 - (age - 2600) / 600) : 1;
+    bits.forEach(b => {
+      b.x += b.vx; b.y += b.vy; b.vy += .05 * dpr; b.r += b.vr;
+      ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.fillStyle = b.c;
+      ctx.fillRect(-b.w / 2, -b.h / 2, b.w, Math.max(1, b.h * Math.abs(Math.cos(b.r * 2))));
+      ctx.restore();
+    });
+    if (age < 3200) requestAnimationFrame(frame); else cv.remove();
+  })(t0);
 }
 function animateTo(dir, step) {
   const card = $('#card');
@@ -1074,10 +1291,10 @@ function next() {
   if (busy) return;
   if (S.mode === 'fingers' && S.players.length >= 2) {
     const alive = S.players.filter(p => leftFor(p.id) > 0).length;
-    if (alive <= 1) { show('results'); return; }
+    if (alive <= 1) { show('results'); celebrate(); return; }
   }
   if (G.i >= G.cards.length - 1) {
-    const more = buildCards(false);
+    const more = buildCards(G.cards.length);
     if (!more.length) { show('setup'); return; }
     G.cards.push(...more);
   }
@@ -1216,6 +1433,8 @@ function bind() {
       S.fingers = +ds.fingers; save(); renderRules();
     } else if (b.id === 'twist-toggle') {
       S.twists = !S.twists; save(); renderRules();
+    } else if (b.id === 'escalate-toggle') {
+      S.escalate = !S.escalate; save(); renderRules();
     } else if (b.id === 'btn-start') {
       newGame(); show('play');
     } else if (b.id === 'btn-resume') {
@@ -1227,6 +1446,17 @@ function bind() {
     const b = e.target.closest('.player');
     if (b && !b.disabled) toggleMark(b.dataset.id);
   });
+  $('#verdict').addEventListener('click', e => {
+    const b = e.target.closest('[data-story]');
+    if (!b) return;
+    const pid = b.dataset.pid;
+    const act = b.dataset.story;
+    if (act === 'start') startStory(pid);
+    else if (act === 'ok') { stopStory(); story = { idx: G.i, pid, phase: 'ok' }; renderVerdict(); }
+    else if (act === 'refuse') { stopStory(); setPenalty(pid, true); }
+    else if (act === 'undo') setPenalty(pid, false);
+  });
+  $('#knockout').addEventListener('click', hideKnockout);
   $('#btn-next').addEventListener('click', next);
   $('#btn-prev').addEventListener('click', prev);
   $('#btn-menu').addEventListener('click', () => show('setup'));

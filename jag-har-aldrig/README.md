@@ -9,7 +9,10 @@ Festspelet där sanningen kostar fingrar. En enda HTML-fil som fungerar i mobile
 - **Fingerräkning**: lägg in upp till 12 namn. Alla börjar med 3, 5 eller 10 fingrar, och den som är sist kvar vinner.
 - **Syndaregister**: ett läge där ingen åker ut och appen bara räknar erkännanden.
 - **Twistkort**: *Dubbelt* kostar två fingrar, *Omvänt* betyder att de som INTE har gjort det fäller, och vart tionde kort ungefär är ett regelkort (Pekleken, Ögonkontakt, Tystnad m.fl.). Med Vågat 18+ valt blandas även Heta stolen, Viskleken, Rodnaden, Kyss, gift, dumpa och Raggningsrepliken in.
-- **”Bara Sara. Historien, tack!”**: när en enda person har gjort något säger appen det direkt.
+- **Stegrande hetta**: kvällen börjar med milda kort. Pikanta kort smyger in runt kort 10, och 18+ kommer först runt kort 30, efter ett eget kort som heter ”Dörren stängs”. Går att stänga av under Spelregler.
+- **”Bara Sara. Historien, tack!”**: när en enda person har gjort något dyker en lapp upp med en 30-sekundersklocka. Vägrar man berätta kostar det ett finger till (går att ångra).
+- **UTE!**: när någon tappar sitt sista finger stämplas det över hela skärmen och telefonen vibrerar. Vinnaren firas med konfetti.
+- **Nya kort varje fest**: appen minns vilka kort ni redan har spelat och lägger dem sist i leken. Startknappen visar hur många som är nya.
 - **Era egna kort**: internskämt blandas in i leken och sparas till nästa fest.
 - **Kvällens utmärkelser**: ställning, Helgonet, Har gjort allt, Ensamvargen och kortet som fällde flest.
 - Svep åt vänster för nästa kort och åt höger för att backa. Skärmen hålls tänd under spelet, och spelet sparas om sidan laddas om.
