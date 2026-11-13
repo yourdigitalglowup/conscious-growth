@@ -1,6 +1,6 @@
 # Sam (@samai4233), medgrundare av AGMM – allt han lär ut
 
-Källa: 29 TikTok-videor med undertext, 5 okt – 12 nov 2026 (kontot hade 32 videor totalt). Fullständiga transkript finns i `transkript.md`.
+Källa: alla 32 TikTok-videor, 5 okt – 12 nov 2026 (29 via TikToks undertexter, 3 transkriberade lokalt med Whisper). Fullständiga transkript finns i `transkript.md`.
 
 ## Vem han är
 - 23 år, Storbritannien. Medgrundare av **AGMM**, ett AI-konsultbolag (bolaget två år gammalt, själv företagare i fem år).
@@ -14,11 +14,13 @@ Källa: 29 TikTok-videor med undertext, 5 okt – 12 nov 2026 (kontot hade 32 vi
 - AI gör att nästan vem som helst kan bygga nästan vad som helst. Fördelen flyttas därför från *hur* man bygger till *vad* som är värt att bygga.
 - **Visdom** är att veta vad som faktiskt spelar roll. Han liknar det vid en 60-åring som ger *ett* relevant råd i stället för att räkna upp allt hen vet.
 - **Kreativitet** är den andra halvan. AI gör produktion billig men gör det inte lättare att få uppmärksamhet. "Gör produkten snygg" ger samma resultat som alla andra får, medan en egen kreativ idé som AI förverkligar sticker ut.
+- Att vara bra på AI betyder inte att man är bra på affärer. Kunder bryr sig inte om arkitektur eller hur många modeller du kör, bara om det tjänar pengar, sparar tid eller löser ett gammalt problem. Sälj *varför* de behöver det, inte hur smart systemet är.
 - Värdefulla färdigheter framåt: att hitta ett *dyrt* problem, förstå vad som verkligen behöver lösas och vinna kundens förtroende.
 
 ### 2. AI i företaget: mät resultat, inte aktivitet
 - **Skalbarhet:** Om dubbel försäljning skulle krascha företaget är du inte redo att växa. Personalen ska inte behöva växa i samma takt som arbetsmängden.
-- "Målet är inte att använda AI så att DU kan jobba mer, utan att bygga något som behöver mindre av dig."
+- "Målet är inte att använda AI så att DU kan jobba mer, utan att bygga något som behöver mindre av dig." Om företaget stannar när du stannar har du byggt ett jobb, inte ett företag. Hans regel: inga *uppgifter* ska komma till honom, bara *beslut*. Det som är förutsägbart automatiseras, det AI kan sköta säkert inom tydliga gränser får AI sköta, och bara det som verkligen kräver honom hamnar hos honom.
+- **Rita om processerna, lägg inte bara till AI.** Många processer finns bara för att en människa förr var tvungen att läsa, flytta, kolla och besluta. Fråga: "Om vi designade processen i dag, skulle den se ut så här?" Om svaret är nej ska den inte automatiseras utan raderas och byggas om. Behåll människor där omdöme, ansvar och relationer spelar roll.
 - Att ha AI i företaget är inte samma sak som att tjäna pengar på AI. Mät eliminerat arbete, sänkta kostnader och ökade intäkter (han hänvisar till Gartner: 85 % ökar AI-budgeten, bara 22 % har skalat AI).
 - Granska varje stor mjukvarukostnad inför 2027. Han hänvisar till McKinsey: 32 % av företagen har valt att bygga själva med AI i stället för att köpa. Det skapar efterfrågan på AI-konsulter.
 - Innan du bygger nytt: kolla vad företaget redan har. Data och kunskap kan säljas till andra AI-agenter via betalprotokollet **x402**.
