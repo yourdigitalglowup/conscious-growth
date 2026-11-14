@@ -17,7 +17,7 @@ mjölk|filmjölk|yoghurt naturell|grekisk yoghurt|kvarg|smör|bregott|matlagning
 gräddfil|ost hushållsost|riven ost|fetaost|halloumi|mozzarella|keso|parmesan|ägg|havredryck|laktosfri mjölk|
 kycklingfilé|kycklinglårfilé|hel kyckling|nötfärs|blandfärs|fläskfärs|kycklingfärs|fläskfilé|fläskkarré|
 bacon|falukorv|prinskorv|grillkorv|kassler|skinka pålägg|kalkon pålägg|högrevsgryta|entrecote|
-laxfilé|torskfilé|sejfilé|fiskpinnar|räkor|tonfisk konserv|makrill i tomat|sill|
+laxfilé|torskfilé|sejfilé|räkor|tonfisk konserv|makrill i tomat|sill|
 tofu|vegofärs|quorn|bönor kidney|kikärtor|svarta bönor|linser röda|vita bönor|
 potatis|sötpotatis|morötter|lök gul|rödlök|vitlök|purjolök|broccoli|blomkål|vitkål|spetskål|
 zucchini|aubergine|paprika|gurka|tomat|körsbärstomater|isbergssallad|spenat|ruccola|champinjoner|
@@ -31,16 +31,25 @@ krossade tomater|passerade tomater|tomatpuré|kokosmjölk|buljong|fond|soja|glut
 pesto|ketchup|senap|majonnäs|salsa|tacokrydda|curry|olivolja|rapsolja|vinäger|honung|socker|
 salt|svartpeppar|paprikapulver|oregano|basilika|kanel|chiliflakes|
 jordnötssmör|nötter|cashewnötter|mandel|solroskärnor|russin|
-fryst pizza|frysta köttbullar|färdiga pannkakor|pommes frites|fryst lax|
-juice|kaffe|te|mineralvatten|knäckebröd glutenfri|risgrynsgröt|kakao
+fryst lax|persilja|dill|färsk basilika|koriander|gräddfil|mjölk standard|potatismjöl|bakpulver|jäst|
+juice|kaffe|te|mineralvatten|knäckebröd glutenfri|risgrynsgröt|kakao|kycklingbröst|högrev|nötkött grytbitar|hela tomater konserv|smetana
 """
+
+
+FARDIGRATT = ("pizza", "pommes", "köttbullar", "fiskpinn", "färdig", "lasagne", "lasagnette", "piroger",
+              "gratäng", "pannkakor", "färdigrätt", "mikrorätt", "nuggets", "dumplings", "vårrulle", "kroketter")
+
+
+def ar_fardigratt(x):
+    t = (x.get("name", "") + " " + (x.get("productLine2") or "")).lower()
+    return any(w in t for w in FARDIGRATT)
 
 
 def hamta(q, size=40):
     url = "https://www.willys.se/search/clean?" + urllib.parse.urlencode({"q": q, "size": size})
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=20) as r:
-        return json.load(r).get("results", [])
+        return json.load(r).get("results") or []
 
 
 def jmf(x):
@@ -77,7 +86,7 @@ def main():
     varor = {}
     for i, q in enumerate(ord_, 1):
         try:
-            res = [x for x in hamta(q) if x.get("online") and not x.get("outOfStock") and x.get("priceValue")]
+            res = [x for x in hamta(q) if x.get("online") and not x.get("outOfStock") and x.get("priceValue") and not ar_fardigratt(x)]
         except Exception as e:  # nätverksfel: hoppa över sökordet
             print(f"  ✗ {q}: {e}")
             continue
