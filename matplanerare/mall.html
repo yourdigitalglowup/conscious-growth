@@ -7,16 +7,17 @@
 :root{
   --bg:#f5f7f4; --surface:#ffffff; --ink:#1b2620; --muted:#5d6b63; --line:#dde4de;
   --accent:#2f7d4f; --accent-ink:#ffffff; --accent-soft:#e3f0e7; --warn:#b4471f; --warn-soft:#fbe9e1; --paper:#fffdf8;
+  --heart:#d6336c; --heart-soft:#fde4ee;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#111613; --surface:#18201b; --ink:#e7eee9; --muted:#9aaba1; --line:#2a352e;
-  --accent:#5fbf85; --accent-ink:#0d1a12; --accent-soft:#1d3326; --warn:#f08a62; --warn-soft:#3a2219; --paper:#1d231f; color-scheme:dark}}
+  --accent:#5fbf85; --accent-ink:#0d1a12; --accent-soft:#1d3326; --warn:#f08a62; --warn-soft:#3a2219; --paper:#1d231f; --heart:#ff6b9a; --heart-soft:#3d1a27; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111613; --surface:#18201b; --ink:#e7eee9; --muted:#9aaba1; --line:#2a352e;
-  --accent:#5fbf85; --accent-ink:#0d1a12; --accent-soft:#1d3326; --warn:#f08a62; --warn-soft:#3a2219; --paper:#1d231f; color-scheme:dark}
+  --accent:#5fbf85; --accent-ink:#0d1a12; --accent-soft:#1d3326; --warn:#f08a62; --warn-soft:#3a2219; --paper:#1d231f; --heart:#ff6b9a; --heart-soft:#3d1a27; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);}
 .wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -85,19 +86,75 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
 .total{border-top:1px dashed var(--muted);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-weight:500;font-size:15px}
 .foot{font-size:12.5px;color:var(--muted);margin-top:8px}
 .tips{font-size:14px}
-@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+.tabs{display:flex;gap:6px;margin:0 0 20px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs a{font:600 15px var(--body);color:var(--muted);text-decoration:none;padding:10px 14px;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.who{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.person{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;border:2px solid var(--line);background:var(--surface);font:600 15px var(--body);color:var(--ink);cursor:pointer}
+.person .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 15px var(--display)}
+.person[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.addp{display:flex;gap:6px;flex-wrap:wrap}
+.addp input{flex:1 1 150px;min-width:0;width:auto}
+[hidden]{display:none!important}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:18px 0 14px}
+.dishes{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.dish{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.dish.liked{border-color:var(--heart)}
+.dish .em{font-size:42px;line-height:1}
+.dish h3{font:700 1.1rem/1.25 var(--display);margin:0;text-wrap:balance}
+.dish p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.dish .bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.heart{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--bg);border-radius:999px;padding:8px 14px;font:700 15px var(--body);color:var(--ink);cursor:pointer;min-height:44px}
+.heart svg{width:20px;height:20px;fill:none;stroke:var(--heart);stroke-width:2.2}
+.heart[aria-pressed="true"]{background:var(--heart-soft);border-color:var(--heart)}
+.heart[aria-pressed="true"] svg{fill:var(--heart)}
+.heart:active{transform:scale(.94)}
+.dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.dots i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 11px var(--body);font-style:normal}
+.x{position:absolute;top:8px;right:8px;background:transparent;border:0;color:var(--muted);font-size:18px;padding:4px 8px;cursor:pointer;border-radius:8px}
+.mini{font-size:13px;color:var(--muted)}
+.favnote{display:flex;gap:8px;align-items:flex-start}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}.heart:active{transform:none}}
 </style>
 
 <div class="wrap">
   <header>
     <div>
       <h1>Veckomeny på budget</h1>
-      <p class="lede">Fyll i budget och önskemål. Claude gör en veckomeny av varor som finns på Willys, och inköpslistan räknas ut med Willys egna priser.</p>
+      <p class="lede">Familjen hjärtar rätterna de gillar. Sedan gör Claude en veckomeny av favoriterna, med en inköpslista som räknas ut med Willys egna priser.</p>
     </div>
     <div class="stamp" id="stamp"></div>
   </header>
 
-  <div class="grid">
+  <nav class="tabs" aria-label="Vyer">
+    <a href="#ratter" id="tab-ratter">Rätter att välja</a>
+    <a href="#meny" id="tab-meny">Veckomeny och inköp</a>
+  </nav>
+
+  <section id="vy-ratter" aria-label="Rätter att välja">
+    <div class="panel">
+      <span class="lbl">Vem hjärtar? <span class="hint">Tryck på ditt namn och sedan på hjärtat vid rätterna du gillar.</span></span>
+      <div class="who" id="who"></div>
+      <form class="addp" id="addp" style="margin-top:12px">
+        <input id="nyperson" type="text" maxlength="20" placeholder="Lägg till namn" aria-label="Lägg till familjemedlem">
+        <button class="ghost" type="submit">Lägg till</button>
+      </form>
+    </div>
+    <div class="toolbar">
+      <div class="btnrow">
+        <button class="primary" id="foreslå" type="button">Föreslå nya rätter</button>
+        <button class="ghost" id="sortera" type="button" aria-pressed="false">Mest hjärtade först</button>
+      </div>
+      <form class="addp" id="egen">
+        <input id="egenratt" type="text" maxlength="60" placeholder="Egen rätt, t.ex. tacos" aria-label="Lägg till egen rätt">
+        <button class="ghost" type="submit">Lägg till rätt</button>
+      </form>
+    </div>
+    <div class="status" id="rstatus" role="status"></div>
+    <div class="dishes" id="dishes"></div>
+  </section>
+
+  <div class="grid" id="vy-meny">
     <section class="panel" aria-label="Dina önskemål">
       <form id="f">
         <div class="row2">
@@ -129,7 +186,9 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
           <div class="chips">
             <label class="chip"><input type="checkbox" id="bas" checked><span>Jag har salt, peppar och olja hemma</span></label>
             <label class="chip"><input type="checkbox" id="lunch"><span>Räkna med matlåda till lunch</span></label>
+            <label class="chip"><input type="checkbox" id="favs" checked><span>Använd familjens hjärtade rätter</span></label>
           </div>
+          <p class="mini" id="favinfo"></p>
         </div>
         <div class="btnrow">
           <button class="primary" id="go" type="submit">Skapa veckomeny</button>
@@ -189,12 +248,12 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
     dagar: [...document.querySelectorAll('input[name=dag]:checked')].map(i => DAGAR.find(d => d.startsWith(i.value))),
     kost: [...document.querySelectorAll('input[name=kost]:checked')].map(i => i.value),
     utr: [...document.querySelectorAll('input[name=utr]:checked')].map(i => i.value),
-    bas: $("bas").checked, lunch: $("lunch").checked
+    bas: $("bas").checked, lunch: $("lunch").checked, favs: $("favs").checked
   });
   const saved = store.get("vmb-form");
   if (saved) {
     fields.forEach(k => { if (saved[k] != null) $(k).value = saved[k]; });
-    $("bas").checked = !!saved.bas; $("lunch").checked = !!saved.lunch;
+    $("bas").checked = !!saved.bas; $("lunch").checked = !!saved.lunch; $("favs").checked = saved.favs !== false;
     document.querySelectorAll('input[name=dag]').forEach(i => i.checked = saved.dagar.some(d => d.startsWith(i.value)));
     document.querySelectorAll('input[name=kost]').forEach(i => i.checked = saved.kost.includes(i.value));
     document.querySelectorAll('input[name=utr]').forEach(i => i.checked = saved.utr.includes(i.value));
@@ -222,7 +281,7 @@ HUSHÅLL
 - Vill inte ha: ${o.ogillar || "inget"}
 - ${o.bas ? "Salt, peppar och matolja finns hemma – köp inte dem." : "Inga basvaror finns hemma."}
 - ${o.lunch ? "Laga dubbla portioner så att det räcker till matlåda dagen efter." : "Bara middag."}
-${feedback ? `\nVIKTIGT FRÅN FÖRRA FÖRSÖKET: ${feedback}\n` : ""}
+${o.favs && favoriter().length ? `\nFAMILJENS FAVORITER (antal hjärtan från familjen). Bygg veckan i första hand på de mest hjärtade rätterna, gjorda från grunden. Fyll på med liknande rätter om det behövs eller om budgeten inte räcker:\n${favoriter().map(f => `- ${f.namn} (${f.antal} hjärtan${f.vem.length ? ": " + f.vem.join(", ") : ""})`).join("\n")}\n` : ""}${feedback ? `\nVIKTIGT FRÅN FÖRRA FÖRSÖKET: ${feedback}\n` : ""}
 REGLER
 - Välj bara varor ur katalogen och ange deras kod exakt. Hitta inte på varor eller priser.
 - Allt lagas från grunden av råvaror. Inga färdigrätter, frysta rätter eller halvfabrikat (t.ex. färdig pizza, köttbullar, pommes, fiskpinnar, färdiga såser eller pulvermixar). Frysta råvaror som ärtor, bär eller fiskfilé går bra.
@@ -387,6 +446,187 @@ ${katalogText}`;
       $("go").disabled = false; $("stop").hidden = true;
     }
   }
+
+  // ---------- Familjens rätter och hjärtan (delad lagring) ----------
+  const FARGER = ["#2f7d4f","#d6336c","#1c6fb5","#b85c00","#7048b6","#0f8a8a","#a33a3a","#5b6b00"];
+  const fam = { namn: [], ratter: [], hjartan: [], jag: null, sortera: false, db: null };
+  try { fam.jag = localStorage.getItem("vmb-jag"); } catch {}
+  const pid = n => n.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "x";
+  const farg = n => FARGER[Math.max(0, fam.namn.indexOf(n)) % FARGER.length];
+  const rstatus = (t, err) => { $("rstatus").textContent = t; $("rstatus").className = "status" + (err ? " err" : ""); };
+
+  function favoriter() {
+    return fam.ratter.map(r => {
+      const vem = fam.hjartan.filter(h => h.ratt === r.id).map(h => h.person);
+      return { namn: r.namn, antal: vem.length, vem };
+    }).filter(f => f.antal > 0).sort((a, b) => b.antal - a.antal).slice(0, 20);
+  }
+
+  function renderWho() {
+    const w = $("who"); w.innerHTML = "";
+    if (!fam.namn.length) { const p = document.createElement("span"); p.className = "mini"; p.textContent = "Lägg till alla i familjen här nedanför."; w.append(p); }
+    for (const n of fam.namn) {
+      const b = document.createElement("button"); b.type = "button"; b.className = "person";
+      b.setAttribute("aria-pressed", String(fam.jag === n));
+      b.innerHTML = `<span class="av"></span><span></span>`;
+      b.querySelector(".av").textContent = n.slice(0, 1).toUpperCase();
+      b.querySelector(".av").style.background = farg(n);
+      b.lastChild.textContent = n;
+      b.onclick = () => { fam.jag = n; try { localStorage.setItem("vmb-jag", n); } catch {} renderWho(); renderDishes(); };
+      w.append(b);
+    }
+  }
+
+  const HJ = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.3 4.5 6.8 4.5c2.1 0 3.6 1.2 5.2 3 1.6-1.8 3.1-3 5.2-3 3.5 0 5.4 3.5 4.1 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>`;
+
+  function renderDishes() {
+    const d = $("dishes"); d.innerHTML = "";
+    let lista = [...fam.ratter];
+    const antal = id => fam.hjartan.filter(h => h.ratt === id).length;
+    lista.sort(fam.sortera ? (a, b) => antal(b.id) - antal(a.id) || (b.skapad || 0) - (a.skapad || 0) : (a, b) => (b.skapad || 0) - (a.skapad || 0));
+    if (!lista.length) {
+      const e = document.createElement("div"); e.className = "panel empty"; e.style.gridColumn = "1/-1";
+      e.innerHTML = `<h2>Inga rätter än</h2><p>Tryck på <b>Föreslå nya rätter</b> så kommer Claude med idéer, eller skriv in en egen rätt. Sedan hjärtar alla det de gillar.</p>`;
+      d.append(e); return;
+    }
+    for (const r of lista) {
+      const vem = fam.hjartan.filter(h => h.ratt === r.id).map(h => h.person);
+      const mitt = fam.jag && vem.includes(fam.jag);
+      const c = document.createElement("article"); c.className = "dish" + (vem.length ? " liked" : "");
+      c.innerHTML = `<div class="em" aria-hidden="true"></div><h3></h3><p></p>
+        <div class="bottom"><button type="button" class="heart"></button><div class="dots"></div></div>
+        <button type="button" class="x" aria-label="Ta bort rätten">×</button>`;
+      c.querySelector(".em").textContent = r.emoji || "🍽️";
+      c.querySelector("h3").textContent = r.namn;
+      c.querySelector("p").textContent = [r.beskrivning, r.tid ? `${r.tid} min` : ""].filter(Boolean).join(" · ");
+      const h = c.querySelector(".heart");
+      h.innerHTML = HJ + `<span>${vem.length}</span>`;
+      h.setAttribute("aria-pressed", String(!!mitt));
+      h.setAttribute("aria-label", `${mitt ? "Ta bort ditt hjärta från" : "Hjärta"} ${r.namn}, ${vem.length} hjärtan`);
+      h.onclick = () => toggleHeart(r);
+      const dots = c.querySelector(".dots");
+      for (const p of vem) { const i = document.createElement("i"); i.textContent = p.slice(0, 1).toUpperCase(); i.title = p; i.style.background = farg(p); dots.append(i); }
+      c.querySelector(".x").onclick = () => taBort(r, c);
+      d.append(c);
+    }
+  }
+
+  async function toggleHeart(r) {
+    if (!fam.db) { rstatus("Hjärtan kan bara sparas när sidan är öppen i Claude.", true); return; }
+    if (!fam.jag) { rstatus("Tryck på ditt namn först, sedan på hjärtat.", true); $("who").scrollIntoView({block: "center"}); return; }
+    const ref = fam.db.doc(`hjartan/${r.id}--${pid(fam.jag)}`);
+    const finns = fam.hjartan.some(h => h.ratt === r.id && h.person === fam.jag);
+    try { finns ? await ref.delete() : await ref.set({ ratt: r.id, person: fam.jag }); rstatus(""); }
+    catch (e) { rstatus(dbFel(e), true); }
+  }
+
+  async function taBort(r, kort) {
+    if (kort.dataset.bekrafta !== "1") {
+      kort.dataset.bekrafta = "1"; const x = kort.querySelector(".x");
+      x.textContent = "Ta bort?"; x.style.fontSize = "13px"; x.style.color = "var(--warn)";
+      setTimeout(() => { if (kort.isConnected) { kort.dataset.bekrafta = ""; x.textContent = "×"; x.style.fontSize = ""; x.style.color = ""; } }, 3000);
+      return;
+    }
+    try {
+      for (const h of fam.hjartan.filter(h => h.ratt === r.id)) await fam.db.doc(`hjartan/${r.id}--${pid(h.person)}`).delete();
+      await fam.db.doc(`ratter/${r.id}`).delete();
+    } catch (e) { rstatus(dbFel(e), true); }
+  }
+
+  const dbFel = e => ({ quota_exceeded: "Listan är full. Ta bort några rätter först.", resource_exhausted: "För många ändringar på en gång. Vänta lite.", invalid_argument: "Du har inte behörighet att ändra listan." })[e && e.code] || "Det gick inte att spara. Försök igen.";
+
+  async function sparaRatter(lista) {
+    const finns = new Set(fam.ratter.map(r => r.namn.toLowerCase()));
+    let n = 0, t = Date.now();
+    for (const r of lista) {
+      const namn = String(r.namn || "").trim().slice(0, 60);
+      if (!namn || finns.has(namn.toLowerCase())) continue;
+      finns.add(namn.toLowerCase());
+      await fam.db.collection("ratter").doc().set({
+        namn, beskrivning: String(r.beskrivning || "").slice(0, 140), emoji: String(r.emoji || "").slice(0, 8),
+        tid: Number(r.tid) || null, skapad: t - n
+      });
+      n++;
+    }
+    return n;
+  }
+
+  $("foreslå").onclick = async () => {
+    const sample = await claude.use("sample");
+    if (!sample || !fam.db) { rstatus("Den här sidan behöver öppnas i Claude för att föreslå rätter.", true); return; }
+    const o = readForm(), btn = $("foreslå"); btn.disabled = true;
+    rstatus("Claude hittar på rätter…");
+    const gilla = favoriter().map(f => f.namn);
+    try {
+      const lista = await sample.json(`Föreslå 12 middagsrätter för en svensk barnfamilj. Allt lagas från grunden av råvaror som finns i en vanlig svensk mataffär (Willys). Inga färdigrätter.
+Kost: ${o.kost.join(", ") || "inga krav"}. Vill inte ha: ${o.ogillar || "inget"}. Önskemål: ${o.pref || "inga"}. Köksutrustning: ${o.utr.join(", ") || "spis"}.
+${gilla.length ? "Familjen gillar redan: " + gilla.join(", ") + ". Föreslå några i samma stil och några nya." : "Blanda barnfavoriter med lite nytt."}
+Föreslå INTE dessa som redan finns: ${fam.ratter.map(r => r.namn).join(", ") || "-"}.
+Svara med ENDAST en JSON-array: [{"namn":"Kort namn som barn förstår","beskrivning":"En lockande mening","emoji":"en emoji som passar","tid":30}]`, { cache: false });
+      if (!Array.isArray(lista)) throw { code: "invalid_json" };
+      const n = await sparaRatter(lista);
+      rstatus(`${n} nya rätter! Tryck på ditt namn och hjärta det du gillar.`);
+    } catch (e) {
+      rstatus(ERR[e && e.code] || (e && e.code in {quota_exceeded:1,resource_exhausted:1,invalid_argument:1} ? dbFel(e) : "Det gick inte att hämta förslag. Försök igen."), true);
+    } finally { btn.disabled = false; }
+  };
+
+  $("egen").addEventListener("submit", async e => {
+    e.preventDefault();
+    const namn = $("egenratt").value.trim(); if (!namn) return;
+    if (!fam.db) { rstatus("Den här sidan behöver öppnas i Claude för att spara rätter.", true); return; }
+    try { const n = await sparaRatter([{ namn, emoji: "🍽️" }]); $("egenratt").value = ""; rstatus(n ? `${namn} är tillagd.` : `${namn} finns redan.`); }
+    catch (err) { rstatus(dbFel(err), true); }
+  });
+
+  $("addp").addEventListener("submit", async e => {
+    e.preventDefault();
+    const n = $("nyperson").value.trim().slice(0, 20); if (!n) return;
+    if (!fam.db) { rstatus("Den här sidan behöver öppnas i Claude för att spara familjen.", true); return; }
+    if (fam.namn.includes(n)) { $("nyperson").value = ""; return; }
+    try { await fam.db.doc("familj/medlemmar").set({ namn: [...fam.namn, n] }); $("nyperson").value = ""; fam.jag = n; try { localStorage.setItem("vmb-jag", n); } catch {} }
+    catch (err) { rstatus(dbFel(err), true); }
+  });
+
+  $("sortera").onclick = () => { fam.sortera = !fam.sortera; $("sortera").setAttribute("aria-pressed", String(fam.sortera)); renderDishes(); };
+
+  function updateFavInfo() {
+    const f = favoriter();
+    $("favinfo").textContent = f.length ? `Familjens topp: ${f.slice(0, 5).map(x => `${x.namn} (${x.antal})`).join(", ")}` : "Inga hjärtade rätter än. Hjärta rätter under fliken Rätter att välja.";
+  }
+
+  (async () => {
+    renderWho(); renderDishes(); updateFavInfo();
+    const db = await claude.use("db");
+    if (!db) { rstatus("Familjelistan sparas bara när sidan är öppen i Claude.", true); return; }
+    fam.db = db;
+    const slow = setTimeout(() => rstatus("Familjelistan laddas inte just nu. Kontrollera nätet.", true), 10000);
+    const klar = () => clearTimeout(slow);
+    db.doc("familj/medlemmar").onSnapshot(s => {
+      if (!s.metadata.fromCache) klar();
+      fam.namn = (s.exists && Array.isArray(s.data().namn)) ? s.data().namn.map(String) : [];
+      if (fam.jag && !fam.namn.includes(fam.jag)) fam.jag = null;
+      renderWho(); renderDishes();
+    }, () => klar());
+    db.collection("ratter").onSnapshot(s => {
+      if (!s.metadata.fromCache) klar();
+      fam.ratter = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderDishes(); updateFavInfo();
+    }, () => { klar(); rstatus("Rätterna gick inte att läsa in.", true); });
+    db.collection("hjartan").onSnapshot(s => {
+      fam.hjartan = s.docs.map(d => d.data()).filter(h => h && h.ratt && h.person);
+      renderDishes(); updateFavInfo();
+    }, () => {});
+  })();
+
+  // ---------- Flikar ----------
+  function visa() {
+    const vy = location.hash === "#meny" ? "meny" : "ratter";
+    $("vy-ratter").hidden = vy !== "ratter"; $("vy-meny").hidden = vy !== "meny";
+    $("tab-ratter").toggleAttribute("aria-current", vy === "ratter"); $("tab-meny").toggleAttribute("aria-current", vy === "meny");
+    if (vy === "ratter") $("tab-ratter").setAttribute("aria-current", "page"); else $("tab-meny").setAttribute("aria-current", "page");
+  }
+  addEventListener("hashchange", visa); visa();
 
   $("f").addEventListener("submit", e => { e.preventDefault(); run(); });
   $("stop").onclick = () => ctl && ctl.abort();
