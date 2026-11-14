@@ -116,6 +116,9 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
 .mini{font-size:13px;color:var(--muted)}
 .favnote{display:flex;gap:8px;align-items:flex-start}
 .dish .meta{margin:0}
+.dish .foto{margin:-16px -16px 4px;aspect-ratio:4/3;overflow:hidden;border-radius:15px 15px 0 0;background:var(--accent-soft)}
+.dish .foto img{width:100%;height:100%;object-fit:cover;display:block;max-width:100%}
+.dish .x{background:var(--surface);opacity:.92;z-index:1}
 .rec summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--accent)}
 .recbody{display:flex;flex-direction:column;gap:4px;margin-top:6px;font-size:14px}
 .recbody ul,.recbody ol{margin:0 0 6px;padding-left:18px}
@@ -168,6 +171,7 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
       </div>
       <div><label for="e-ing">Ingredienser <span class="hint">en per rad, t.ex. 500 g nötfärs</span></label><textarea id="e-ing" rows="6" placeholder="500 g nötfärs&#10;1 gul lök&#10;2 dl grädde"></textarea></div>
       <div><label for="e-steg">Gör så här <span class="hint">ett steg per rad</span></label><textarea id="e-steg" rows="5"></textarea></div>
+      <div><label for="e-foto">Foto <span class="hint">valfritt, t.ex. en bild du tagit själv</span></label><input id="e-foto" type="file" accept="image/*"><p class="mini" id="e-fotoinfo"></p></div>
       <div><label for="e-url">Länk till receptet <span class="hint">valfritt</span></label><input id="e-url" type="text" placeholder="https://"></div>
       <div class="btnrow"><button class="primary" type="submit" id="e-spara">Spara receptet</button><button class="ghost" type="button" id="e-avbryt">Avbryt</button></div>
     </form>
@@ -520,11 +524,16 @@ ${katalogText}`;
       const vem = fam.hjartan.filter(h => h.ratt === r.id).map(h => h.person);
       const mitt = fam.jag && vem.includes(fam.jag);
       const c = document.createElement("article"); c.className = "dish" + (vem.length ? " liked" : "");
-      c.innerHTML = `<div class="em" aria-hidden="true"></div><h3></h3><div class="meta"></div><p></p>
+      c.innerHTML = `<div class="foto" hidden><img alt="" loading="lazy" decoding="async"></div><div class="em" aria-hidden="true"></div><h3></h3><div class="meta"></div><p></p>
         <details class="rec" hidden><summary>Visa recept</summary><div class="recbody"><b class="mini">Ingredienser</b><ul></ul><b class="mini">Gör så här</b><ol></ol><div class="reclinks"></div></div></details>
         <div class="bottom"><button type="button" class="heart"></button><div class="dots"></div></div>
         <button type="button" class="x" aria-label="Ta bort rätten">×</button>`;
       c.querySelector(".em").textContent = r.emoji || "🍽️";
+      if (r.bild) {
+        const f = c.querySelector(".foto"), im = f.querySelector("img");
+        im.src = r.bild; im.alt = r.titel || r.namn; f.hidden = false; c.querySelector(".em").hidden = true;
+        im.onerror = () => { f.hidden = true; c.querySelector(".em").hidden = false; };
+      }
       c.querySelector("h3").textContent = r.titel || r.namn;
       c.querySelector("p").textContent = r.beskrivning || "";
       const meta = c.querySelector(".meta");
@@ -622,9 +631,17 @@ Svara med ENDAST en JSON-array: [{"namn":"Kort namn som barn förstår","beskriv
     $("e-port").value = r ? (parseInt(r.portioner) || 4) : 4; $("e-tid").value = r && r.tid ? r.tid : "";
     $("e-ing").value = r ? (r.ingredienser || []).join("\n") : ""; $("e-steg").value = r ? (r.steg || []).join("\n") : "";
     $("e-url").value = r ? (r.url || "") : "";
+    $("e-foto").value = ""; $("e-fotoinfo").textContent = r && r.bild ? "Receptet har redan ett foto. Välj ett nytt för att byta." : "";
     $("egen").hidden = false; $("e-namn").focus(); $("egen").scrollIntoView({block: "start"});
   }
   function redigera(r) { visaForm(r); }
+  async function krympBild(fil) {
+    const bmp = await createImageBitmap(fil);
+    const skala = Math.min(1, 800 / Math.max(bmp.width, bmp.height));
+    const cv = document.createElement("canvas"); cv.width = Math.round(bmp.width * skala); cv.height = Math.round(bmp.height * skala);
+    cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+    return await new Promise(res => cv.toBlob(res, "image/jpeg", 0.82));
+  }
   $("nyttrecept").onclick = () => visaForm(null);
   $("e-avbryt").onclick = () => { $("egen").hidden = true; redigerar = null; };
   $("egen").addEventListener("submit", async e => {
@@ -642,11 +659,20 @@ Svara med ENDAST en JSON-array: [{"namn":"Kort namn som barn förstår","beskriv
       beskrivning: "", skapad: redigerar ? (fam.ratter.find(r => r.id === redigerar) || {}).skapad || Date.now() : Date.now()
     };
     $("e-spara").disabled = true;
+    const gammal = redigerar ? (fam.ratter.find(r => r.id === redigerar) || {}).bild : "";
+    if (gammal) doc.bild = gammal;
     try {
+      const fil = $("e-foto").files && $("e-foto").files[0];
+      if (fil) {
+        const assets = await claude.use("assets");
+        if (!assets) throw { code: "nofoto" };
+        rstatus("Laddar upp fotot…");
+        doc.bild = (await assets.upload(await krympBild(fil))).url;
+      }
       await (redigerar ? fam.db.doc(`ratter/${redigerar}`) : fam.db.collection("ratter").doc()).set(doc);
       rstatus(redigerar ? `${namn} är uppdaterat.` : `${namn} är sparat. Nu kan alla hjärta det.`);
       $("egen").hidden = true; redigerar = null;
-    } catch (err) { rstatus(dbFel(err), true); }
+    } catch (err) { rstatus(err && err.code === "nofoto" ? "Fotot kunde inte laddas upp här. Spara receptet utan foto eller försök i Claude-appen." : dbFel(err), true); }
     finally { $("e-spara").disabled = false; }
   });
 

@@ -39,7 +39,8 @@
   "betyg": 3.8,
   "roster": 128,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/tacos-2"
+  "url": "https://www.koket.se/tacos-2",
+  "bild": "/_blob/8bc40d614d5b533d65786eefbb4faa31"
  },
  {
   "id": "koket-hemlagade-kottbullar",
@@ -69,7 +70,8 @@
   "betyg": 3.1,
   "roster": 41,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/hemlagade-kottbullar"
+  "url": "https://www.koket.se/hemlagade-kottbullar",
+  "bild": "/_blob/0ca8b9fd10638bdd4400bb4e556b9aca"
  },
  {
   "id": "koket-kottfarssas-med-notfars",
@@ -109,7 +111,8 @@
   "betyg": 4.3,
   "roster": 354,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/kottfarssas-med-notfars"
+  "url": "https://www.koket.se/kottfarssas-med-notfars",
+  "bild": "/_blob/5746507ae35b0508999144840e909b82"
  },
  {
   "id": "koket-lasagne-bolognese",
@@ -151,7 +154,8 @@
   "betyg": 3.72,
   "roster": 90,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/lasagne-bolognese"
+  "url": "https://www.koket.se/lasagne-bolognese",
+  "bild": "/_blob/6724f333d47e3e43c747e5e055461385"
  },
  {
   "id": "koket-frasiga-pannkakor",
@@ -179,7 +183,8 @@
   "betyg": 3.6,
   "roster": 305,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/frasiga-pannkakor"
+  "url": "https://www.koket.se/frasiga-pannkakor",
+  "bild": "/_blob/a8277eb02bfecd98c945cd418a8697b7"
  },
  {
   "id": "koket-klassisk-fiskgratang",
@@ -227,7 +232,8 @@
   "betyg": 3.4,
   "roster": 202,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/klassisk-fiskgratang"
+  "url": "https://www.koket.se/klassisk-fiskgratang",
+  "bild": "/_blob/012422873de5ac147d8689b064c41936"
  },
  {
   "id": "koket-allt-i-ett-kycklinggryta",
@@ -263,7 +269,8 @@
   "betyg": 3.54,
   "roster": 50,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/allt-i-ett-kycklinggryta"
+  "url": "https://www.koket.se/allt-i-ett-kycklinggryta",
+  "bild": "/_blob/ab09f2c57294320ea4c438178a327486"
  },
  {
   "id": "koket-per-morbergs-korvstroganoff",
@@ -298,7 +305,8 @@
   "betyg": 3.9,
   "roster": 640,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/per-morbergs-korvstroganoff"
+  "url": "https://www.koket.se/per-morbergs-korvstroganoff",
+  "bild": "/_blob/3499a9344dbdbf6e11f57ab315555ef8"
  },
  {
   "id": "koket-klassisk-kottfarslimpa-med-graddsas",
@@ -336,7 +344,8 @@
   "betyg": 4.4,
   "roster": 129,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/klassisk-kottfarslimpa-med-graddsas"
+  "url": "https://www.koket.se/klassisk-kottfarslimpa-med-graddsas",
+  "bild": "/_blob/a137e7129bbdedd56382bc66ca18d4c3"
  },
  {
   "id": "koket-pytt-i-panna",
@@ -365,7 +374,8 @@
   "betyg": 3,
   "roster": 19,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/pytt-i-panna"
+  "url": "https://www.koket.se/pytt-i-panna",
+  "bild": "/_blob/98dbfaccd4081f7ffe3849f7b5813e36"
  },
  {
   "id": "koket-spaghetti-carbonara",
@@ -396,7 +406,8 @@
   "betyg": 4.4,
   "roster": 931,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/spaghetti-carbonara"
+  "url": "https://www.koket.se/spaghetti-carbonara",
+  "bild": "/_blob/56128f1052596329606f6366a9d21c53"
  },
  {
   "id": "koket-kramig-laxpasta-med-tomat-och-orter",
@@ -439,7 +450,8 @@
   "betyg": 4.2,
   "roster": 252,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/kramig-laxpasta-med-tomat-och-orter"
+  "url": "https://www.koket.se/kramig-laxpasta-med-tomat-och-orter",
+  "bild": "/_blob/fbaf8e90dc8737c9e657233baeb85321"
  },
  {
   "id": "koket-lax-i-ugn-pa-smordegsbadd",
@@ -474,7 +486,8 @@
   "betyg": 3.4,
   "roster": 151,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/lax-i-ugn-pa-smordegsbadd"
+  "url": "https://www.koket.se/lax-i-ugn-pa-smordegsbadd",
+  "bild": "/_blob/f52f98b971c4f46cac9800aa689882a9"
  },
  {
   "id": "koket-kyckling-i-ugn-3",
@@ -508,7 +521,8 @@
   "betyg": 3.4,
   "roster": 115,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/kyckling-i-ugn-3"
+  "url": "https://www.koket.se/kyckling-i-ugn-3",
+  "bild": "/_blob/e8734f636edda1977ed0b6041a72ad1b"
  },
  {
   "id": "koket-klassisk-hamburgare",
@@ -537,7 +551,8 @@
   "betyg": 3.7,
   "roster": 21,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/klassisk-hamburgare"
+  "url": "https://www.koket.se/klassisk-hamburgare",
+  "bild": "/_blob/586fd0a1dd4afad4e4a79b581b9f7f66"
  },
  {
   "id": "koket-pizzadeg-2",
@@ -561,7 +576,8 @@
   "betyg": 3.6,
   "roster": 132,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/pizzadeg-2"
+  "url": "https://www.koket.se/pizzadeg-2",
+  "bild": "/_blob/586141266cac6c0cf52bc539e96d5fab"
  },
  {
   "id": "koket-burgundisk-kottgryta",
@@ -598,7 +614,8 @@
   "betyg": 3.2,
   "roster": 75,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/burgundisk-kottgryta"
+  "url": "https://www.koket.se/burgundisk-kottgryta",
+  "bild": "/_blob/34f8c3d0f543fc359df5edca634843f0"
  },
  {
   "id": "koket-enkel-tomatsoppa",
@@ -625,7 +642,8 @@
   "betyg": 3.6,
   "roster": 117,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/enkel-tomatsoppa"
+  "url": "https://www.koket.se/enkel-tomatsoppa",
+  "bild": "/_blob/2dc289cb7a9e86a2586e70a482166d00"
  },
  {
   "id": "koket-artsoppa-med-varm-punsch",
@@ -662,7 +680,8 @@
   "betyg": 3.34,
   "roster": 35,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/artsoppa-med-varm-punsch"
+  "url": "https://www.koket.se/artsoppa-med-varm-punsch",
+  "bild": "/_blob/8cf4af6cb4fce95f31370f8f6dfad321"
  },
  {
   "id": "koket-kalpudding",
@@ -732,7 +751,8 @@
   "betyg": 4.1,
   "roster": 572,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/falukorvskebab"
+  "url": "https://www.koket.se/falukorvskebab",
+  "bild": "/_blob/872cdfe3b98fabcf27472e14112cf1eb"
  },
  {
   "id": "koket-potatisgratang-med-kottfars",
@@ -770,7 +790,8 @@
   "betyg": 3.8,
   "roster": 786,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/potatisgratang-med-kottfars"
+  "url": "https://www.koket.se/potatisgratang-med-kottfars",
+  "bild": "/_blob/fa0e188a1e09d0881e4cb94c1f8a4de8"
  },
  {
   "id": "koket-kottfarswok",
@@ -806,7 +827,8 @@
   "betyg": 3.5,
   "roster": 58,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/kottfarswok"
+  "url": "https://www.koket.se/kottfarswok",
+  "bild": "/_blob/8aff4240e11b878a59277fd3ba142c49"
  },
  {
   "id": "koket-chili-con-carne-4",
@@ -839,7 +861,8 @@
   "betyg": 3.8,
   "roster": 258,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/chili-con-carne-4"
+  "url": "https://www.koket.se/chili-con-carne-4",
+  "bild": "/_blob/ea6a6c0926a6b5538d7e62aa434238cd"
  },
  {
   "id": "koket-hemmagjorda-fiskpinnar",
@@ -871,7 +894,8 @@
   "betyg": 3.9,
   "roster": 62,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/hemmagjorda-fiskpinnar"
+  "url": "https://www.koket.se/hemmagjorda-fiskpinnar",
+  "bild": "/_blob/2c485640fd8fc22c028a4f4821cee620"
  },
  {
   "id": "koket-pasta-med-rod-pesto",
@@ -905,7 +929,8 @@
   "betyg": 4.7,
   "roster": 26,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/pasta-med-rod-pesto"
+  "url": "https://www.koket.se/pasta-med-rod-pesto",
+  "bild": "/_blob/b6e4b03e0636f3ea6879995934c1e460"
  },
  {
   "id": "koket-makaronilada-med-bacon-och-lagrad-ost",
@@ -942,7 +967,8 @@
   "betyg": 4.1,
   "roster": 24,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/makaronilada-med-bacon-och-lagrad-ost"
+  "url": "https://www.koket.se/makaronilada-med-bacon-och-lagrad-ost",
+  "bild": "/_blob/149badcd3710ad082cb69c7d3e72fa26"
  },
  {
   "id": "koket-risotto-med-korv",
@@ -969,7 +995,8 @@
   "betyg": 3.6,
   "roster": 52,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/risotto-med-korv"
+  "url": "https://www.koket.se/risotto-med-korv",
+  "bild": "/_blob/bead65f6329b7e259e8da23016bca5f1"
  },
  {
   "id": "koket-curry-nam-nam-gul-kycklingcurry",
@@ -1013,7 +1040,8 @@
   "betyg": 4.3,
   "roster": 75,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/curry-nam-nam-gul-kycklingcurry"
+  "url": "https://www.koket.se/curry-nam-nam-gul-kycklingcurry",
+  "bild": "/_blob/c968dcebcee8c0d56a2e5581873856b9"
  },
  {
   "id": "koket-hoisinnudlar",
@@ -1057,7 +1085,8 @@
   "betyg": 4.1,
   "roster": 451,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/hoisinnudlar"
+  "url": "https://www.koket.se/hoisinnudlar",
+  "bild": "/_blob/3162d219c741528cc3ba9a2327b3fe21"
  },
  {
   "id": "koket-halloumiquesadillas",
@@ -1081,7 +1110,8 @@
   "betyg": 2.9,
   "roster": 14,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/halloumiquesadillas"
+  "url": "https://www.koket.se/halloumiquesadillas",
+  "bild": "/_blob/6b31bbd5b4ac804956b821ea05f50e4a"
  },
  {
   "id": "koket-enchiladas-gott-alternativ-till-tacos",
@@ -1122,7 +1152,8 @@
   "betyg": 3.8,
   "roster": 1287,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/enchiladas-gott-alternativ-till-tacos"
+  "url": "https://www.koket.se/enchiladas-gott-alternativ-till-tacos",
+  "bild": "/_blob/518029a3d5b34b73fe1045e87bc53184"
  },
  {
   "id": "koket-grundrecept-pa-raggmunk",
@@ -1148,7 +1179,8 @@
   "betyg": 3.7,
   "roster": 126,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/grundrecept-pa-raggmunk"
+  "url": "https://www.koket.se/grundrecept-pa-raggmunk",
+  "bild": "/_blob/ebeb8c9909fe6610ad1051e6664907f6"
  },
  {
   "id": "koket-smakrik-linsgryta",
@@ -1185,7 +1217,8 @@
   "betyg": 4.5,
   "roster": 182,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/smakrik-linsgryta"
+  "url": "https://www.koket.se/smakrik-linsgryta",
+  "bild": "/_blob/79996910f055196656fcf40fb1e6b207"
  },
  {
   "id": "koket-lisas-minestronesoppa",
@@ -1225,7 +1258,8 @@
   "betyg": 3.5,
   "roster": 62,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/lisas-minestronesoppa"
+  "url": "https://www.koket.se/lisas-minestronesoppa",
+  "bild": "/_blob/00ad602fad7c7c18d1242cab97028467"
  },
  {
   "id": "koket-grillade-kycklingklubbor",
@@ -1251,7 +1285,8 @@
   "betyg": 3.5,
   "roster": 52,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/grillade-kycklingklubbor"
+  "url": "https://www.koket.se/grillade-kycklingklubbor",
+  "bild": "/_blob/9e8ea2d7b6076d07d71ce8b92ecbe4f2"
  },
  {
   "id": "koket-jagarschnitzel",
@@ -1285,7 +1320,8 @@
   "betyg": 3.8,
   "roster": 17,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/jagarschnitzel"
+  "url": "https://www.koket.se/jagarschnitzel",
+  "bild": "/_blob/ec4f3a6058eea6e2943991d6e21f242e"
  },
  {
   "id": "koket-vegetariska-burritos",
@@ -1320,7 +1356,8 @@
   "betyg": 3.7,
   "roster": 85,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/vegetariska-burritos"
+  "url": "https://www.koket.se/vegetariska-burritos",
+  "bild": "/_blob/2a1efa13d99736f7860fe8750f9e6289"
  },
  {
   "id": "koket-flygande-jacob-med-halloumi",
@@ -1355,7 +1392,8 @@
   "betyg": 3.5,
   "roster": 353,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/flygande-jacob-med-halloumi"
+  "url": "https://www.koket.se/flygande-jacob-med-halloumi",
+  "bild": "/_blob/a973da996bf157c9ec5a9255de79c92d"
  },
  {
   "id": "koket-het-korvgryta-med-kikarter",
@@ -1387,7 +1425,8 @@
   "betyg": 3.7,
   "roster": 23,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/het-korvgryta-med-kikarter"
+  "url": "https://www.koket.se/het-korvgryta-med-kikarter",
+  "bild": "/_blob/73ae3893246313b9775f54351e57609b"
  },
  {
   "id": "koket-flaskpannkaka",
@@ -1416,7 +1455,8 @@
   "betyg": 4.5,
   "roster": 64,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/flaskpannkaka"
+  "url": "https://www.koket.se/flaskpannkaka",
+  "bild": "/_blob/c2bc0e4dda1affb2362aa5ad14064183"
  },
  {
   "id": "koket-chicken-nuggets-med-sotsur-sas",
@@ -1446,7 +1486,8 @@
   "betyg": 4.1,
   "roster": 169,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/chicken-nuggets-med-sotsur-sas"
+  "url": "https://www.koket.se/chicken-nuggets-med-sotsur-sas",
+  "bild": "/_blob/94eaf8fa3ff54fd612eaa3ed6131b191"
  },
  {
   "id": "koket-tareqs-biff-stroganoff",
@@ -1486,7 +1527,8 @@
   "betyg": 4.1,
   "roster": 624,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/tareqs-biff-stroganoff"
+  "url": "https://www.koket.se/tareqs-biff-stroganoff",
+  "bild": "/_blob/d737f9eeecf103aee9a2a39091d2c6a4"
  },
  {
   "id": "koket-klassisk-kalops-husmanskost-som-varmer",
@@ -1524,7 +1566,8 @@
   "betyg": 4.1,
   "roster": 328,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/klassisk-kalops-husmanskost-som-varmer"
+  "url": "https://www.koket.se/klassisk-kalops-husmanskost-som-varmer",
+  "bild": "/_blob/f9b7e76c4ccc52589d1d8ba7396f0ef1"
  },
  {
   "id": "koket-japanska-dumplings",
@@ -1556,6 +1599,7 @@
   "betyg": 3.1,
   "roster": 17,
   "kalla": "Köket.se",
-  "url": "https://www.koket.se/japanska-dumplings"
+  "url": "https://www.koket.se/japanska-dumplings",
+  "bild": "/_blob/2ecf556a9a74f71be4cc4acc196dfa53"
  }
 ]
