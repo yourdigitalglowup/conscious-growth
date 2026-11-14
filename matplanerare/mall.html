@@ -94,6 +94,7 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
 .person .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 15px var(--display)}
 .person[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
 .addp{display:flex;gap:6px;flex-wrap:wrap}
+.addp{flex-direction:row}
 .addp input{flex:1 1 150px;min-width:0;width:auto}
 [hidden]{display:none!important}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:18px 0 14px}
@@ -114,6 +115,14 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
 .x{position:absolute;top:8px;right:8px;background:transparent;border:0;color:var(--muted);font-size:18px;padding:4px 8px;cursor:pointer;border-radius:8px}
 .mini{font-size:13px;color:var(--muted)}
 .favnote{display:flex;gap:8px;align-items:flex-start}
+.dish .meta{margin:0}
+.rec summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--accent)}
+.recbody{display:flex;flex-direction:column;gap:4px;margin-top:6px;font-size:14px}
+.recbody ul,.recbody ol{margin:0 0 6px;padding-left:18px}
+.reclinks{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.reclinks a{color:var(--accent);font-weight:600;font-size:13.5px}
+.recform{display:flex;flex-direction:column;gap:14px;margin-bottom:16px}
+.credit{font-size:12.5px;color:var(--muted);margin-top:18px}
 @media (prefers-reduced-motion:reduce){.meter i{transition:none}.heart:active{transform:none}}
 </style>
 
@@ -145,13 +154,26 @@ h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
         <button class="primary" id="foreslå" type="button">Föreslå nya rätter</button>
         <button class="ghost" id="sortera" type="button" aria-pressed="false">Mest hjärtade först</button>
       </div>
-      <form class="addp" id="egen">
-        <input id="egenratt" type="text" maxlength="60" placeholder="Egen rätt, t.ex. tacos" aria-label="Lägg till egen rätt">
-        <button class="ghost" type="submit">Lägg till rätt</button>
-      </form>
+      <button class="ghost" id="nyttrecept" type="button">Lägg till eget recept</button>
     </div>
+    <form class="panel recform" id="egen" hidden>
+      <h2 class="sec" id="egenrubrik">Eget recept</h2>
+      <div class="row2">
+        <div><label for="e-namn">Namn på rätten</label><input id="e-namn" type="text" maxlength="60" required placeholder="Mormors köttbullar"></div>
+        <div><label for="e-emoji">Bild <span class="hint">en emoji, valfritt</span></label><input id="e-emoji" type="text" maxlength="4" placeholder="🍲"></div>
+      </div>
+      <div class="row2">
+        <div><label for="e-port">Portioner</label><input id="e-port" type="number" min="1" max="20" value="4"></div>
+        <div><label for="e-tid">Tid</label><input id="e-tid" type="number" min="1" max="600" placeholder="30"><span class="hint">minuter</span></div>
+      </div>
+      <div><label for="e-ing">Ingredienser <span class="hint">en per rad, t.ex. 500 g nötfärs</span></label><textarea id="e-ing" rows="6" placeholder="500 g nötfärs&#10;1 gul lök&#10;2 dl grädde"></textarea></div>
+      <div><label for="e-steg">Gör så här <span class="hint">ett steg per rad</span></label><textarea id="e-steg" rows="5"></textarea></div>
+      <div><label for="e-url">Länk till receptet <span class="hint">valfritt</span></label><input id="e-url" type="text" placeholder="https://"></div>
+      <div class="btnrow"><button class="primary" type="submit" id="e-spara">Spara receptet</button><button class="ghost" type="button" id="e-avbryt">Avbryt</button></div>
+    </form>
     <div class="status" id="rstatus" role="status"></div>
     <div class="dishes" id="dishes"></div>
+    <p class="credit">Recepten med märkningen Köket.se kommer från Köket.se (recept.nu) och är sparade för familjens privata bruk. Dela inte sidan offentligt.</p>
   </section>
 
   <div class="grid" id="vy-meny">
@@ -281,7 +303,7 @@ HUSHÅLL
 - Vill inte ha: ${o.ogillar || "inget"}
 - ${o.bas ? "Salt, peppar och matolja finns hemma – köp inte dem." : "Inga basvaror finns hemma."}
 - ${o.lunch ? "Laga dubbla portioner så att det räcker till matlåda dagen efter." : "Bara middag."}
-${o.favs && favoriter().length ? `\nFAMILJENS FAVORITER (antal hjärtan från familjen). Bygg veckan i första hand på de mest hjärtade rätterna, gjorda från grunden. Fyll på med liknande rätter om det behövs eller om budgeten inte räcker:\n${favoriter().map(f => `- ${f.namn} (${f.antal} hjärtan${f.vem.length ? ": " + f.vem.join(", ") : ""})`).join("\n")}\n` : ""}${feedback ? `\nVIKTIGT FRÅN FÖRRA FÖRSÖKET: ${feedback}\n` : ""}
+${o.favs && favoriter().length ? `\nFAMILJENS FAVORITER (antal hjärtan från familjen). Bygg veckan i första hand på de mest hjärtade rätterna, gjorda från grunden. Fyll på med liknande rätter om det behövs eller om budgeten inte räcker:\n${favoriter().map(f => `- [${f.id}] ${f.namn} (${f.antal} hjärtan${f.vem.length ? ": " + f.vem.join(", ") : ""})${f.ingredienser.length ? `\n  Recept för ${f.portioner || "4 portioner"}: ${f.ingredienser.join("; ")}` : ""}`).join("\n")}\nNär en dag bygger på ett av recepten ovan: använd receptets ingredienser omräknade till rätt antal portioner, och skriv receptets id (texten inom hakparentes) i "recept_id".\n` : ""}${feedback ? `\nVIKTIGT FRÅN FÖRRA FÖRSÖKET: ${feedback}\n` : ""}
 REGLER
 - Välj bara varor ur katalogen och ange deras kod exakt. Hitta inte på varor eller priser.
 - Allt lagas från grunden av råvaror. Inga färdigrätter, frysta rätter eller halvfabrikat (t.ex. färdig pizza, köttbullar, pommes, fiskpinnar, färdiga såser eller pulvermixar). Frysta råvaror som ärtor, bär eller fiskfilé går bra.
@@ -292,7 +314,7 @@ REGLER
 - Håll totalen under budgeten. Räkna noga själv innan du svarar.
 
 SVARA MED ENDAST JSON i exakt detta format:
-{"dagar":[{"dag":"Måndag","ratt":"Rättens namn","beskrivning":"En mening","tid":25,"utrustning":"Airfryer","ingredienser":["300 g kycklingfilé", "..."],"steg":["...","..."]}],
+{"dagar":[{"dag":"Måndag","ratt":"Rättens namn","recept_id":null,"beskrivning":"En mening","tid":25,"utrustning":"Airfryer","ingredienser":["300 g kycklingfilé", "..."],"steg":["...","..."]}],
  "inkop":[{"kod":"101240187","antal":1,"till":"Måndag, Torsdag"}],
  "tips":"1–2 meningar om hur man använder rester eller sparar pengar"}
 
@@ -371,6 +393,11 @@ ${katalogText}`;
       if (d.utrustning) { const s = document.createElement("span"); s.textContent = d.utrustning; meta.append(s); }
       for (const i of d.ingredienser || []) { const li = document.createElement("li"); li.textContent = i; c.querySelector("ul").append(li); }
       for (const s of d.steg || []) { const li = document.createElement("li"); li.textContent = s; c.querySelector("ol").append(li); }
+      const rec = d.recept_id && fam.ratter.find(r => r.id === d.recept_id);
+      if (rec) {
+        const s = document.createElement("span"); s.textContent = "♥ Familjens favorit"; s.style.color = "var(--heart)"; meta.prepend(s);
+        if (rec.url) { const a = document.createElement("a"); a.href = rec.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = `Originalrecept på ${rec.kalla || "webben"}`; a.className = "mini"; a.style.display = "block"; a.style.marginTop = "8px"; c.querySelector("details").append(a); }
+      }
       dsec.querySelector(".days-list").append(c);
     }
     out.append(dsec);
@@ -458,7 +485,7 @@ ${katalogText}`;
   function favoriter() {
     return fam.ratter.map(r => {
       const vem = fam.hjartan.filter(h => h.ratt === r.id).map(h => h.person);
-      return { namn: r.namn, antal: vem.length, vem };
+      return { id: r.id, namn: r.titel || r.namn, antal: vem.length, vem, portioner: r.portioner || "", ingredienser: r.ingredienser || [] };
     }).filter(f => f.antal > 0).sort((a, b) => b.antal - a.antal).slice(0, 20);
   }
 
@@ -493,12 +520,27 @@ ${katalogText}`;
       const vem = fam.hjartan.filter(h => h.ratt === r.id).map(h => h.person);
       const mitt = fam.jag && vem.includes(fam.jag);
       const c = document.createElement("article"); c.className = "dish" + (vem.length ? " liked" : "");
-      c.innerHTML = `<div class="em" aria-hidden="true"></div><h3></h3><p></p>
+      c.innerHTML = `<div class="em" aria-hidden="true"></div><h3></h3><div class="meta"></div><p></p>
+        <details class="rec" hidden><summary>Visa recept</summary><div class="recbody"><b class="mini">Ingredienser</b><ul></ul><b class="mini">Gör så här</b><ol></ol><div class="reclinks"></div></div></details>
         <div class="bottom"><button type="button" class="heart"></button><div class="dots"></div></div>
         <button type="button" class="x" aria-label="Ta bort rätten">×</button>`;
       c.querySelector(".em").textContent = r.emoji || "🍽️";
-      c.querySelector("h3").textContent = r.namn;
-      c.querySelector("p").textContent = [r.beskrivning, r.tid ? `${r.tid} min` : ""].filter(Boolean).join(" · ");
+      c.querySelector("h3").textContent = r.titel || r.namn;
+      c.querySelector("p").textContent = r.beskrivning || "";
+      const meta = c.querySelector(".meta");
+      const tag = t => { const s = document.createElement("span"); s.textContent = t; meta.append(s); };
+      if (r.tid) tag(`${r.tid} min`);
+      if (r.portioner) tag(String(r.portioner));
+      if (r.betyg) tag(`★ ${String(r.betyg).replace(".", ",")} (${r.roster || 0})`);
+      tag(r.egen ? "Eget recept" : r.kalla || "Idé från Claude");
+      if ((r.ingredienser && r.ingredienser.length) || (r.steg && r.steg.length)) {
+        const det = c.querySelector(".rec"); det.hidden = false;
+        for (const i of r.ingredienser || []) { const li = document.createElement("li"); li.textContent = i; det.querySelector("ul").append(li); }
+        for (const s of r.steg || []) { const li = document.createElement("li"); li.textContent = s; det.querySelector("ol").append(li); }
+        const links = det.querySelector(".reclinks");
+        if (r.url) { const a = document.createElement("a"); a.href = r.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = `Originalrecept på ${r.kalla || "webben"}`; links.append(a); }
+        if (r.egen) { const e = document.createElement("button"); e.type = "button"; e.className = "ghost"; e.textContent = "Ändra receptet"; e.onclick = () => redigera(r); links.append(e); }
+      }
       const h = c.querySelector(".heart");
       h.innerHTML = HJ + `<span>${vem.length}</span>`;
       h.setAttribute("aria-pressed", String(!!mitt));
@@ -571,12 +613,41 @@ Svara med ENDAST en JSON-array: [{"namn":"Kort namn som barn förstår","beskriv
     } finally { btn.disabled = false; }
   };
 
+  let redigerar = null;
+  const rader = id => $(id).value.split("\n").map(x => x.trim()).filter(Boolean);
+  function visaForm(r) {
+    redigerar = r ? r.id : null;
+    $("egenrubrik").textContent = r ? "Ändra recept" : "Eget recept";
+    $("e-namn").value = r ? (r.titel || r.namn) : ""; $("e-emoji").value = r ? (r.emoji || "") : "";
+    $("e-port").value = r ? (parseInt(r.portioner) || 4) : 4; $("e-tid").value = r && r.tid ? r.tid : "";
+    $("e-ing").value = r ? (r.ingredienser || []).join("\n") : ""; $("e-steg").value = r ? (r.steg || []).join("\n") : "";
+    $("e-url").value = r ? (r.url || "") : "";
+    $("egen").hidden = false; $("e-namn").focus(); $("egen").scrollIntoView({block: "start"});
+  }
+  function redigera(r) { visaForm(r); }
+  $("nyttrecept").onclick = () => visaForm(null);
+  $("e-avbryt").onclick = () => { $("egen").hidden = true; redigerar = null; };
   $("egen").addEventListener("submit", async e => {
     e.preventDefault();
-    const namn = $("egenratt").value.trim(); if (!namn) return;
-    if (!fam.db) { rstatus("Den här sidan behöver öppnas i Claude för att spara rätter.", true); return; }
-    try { const n = await sparaRatter([{ namn, emoji: "🍽️" }]); $("egenratt").value = ""; rstatus(n ? `${namn} är tillagd.` : `${namn} finns redan.`); }
-    catch (err) { rstatus(dbFel(err), true); }
+    const namn = $("e-namn").value.trim(); if (!namn) return;
+    if (!fam.db) { rstatus("Den här sidan behöver öppnas i Claude för att spara recept.", true); return; }
+    if (!redigerar && fam.ratter.some(r => (r.titel || r.namn).toLowerCase() === namn.toLowerCase())) { rstatus(`${namn} finns redan i listan.`, true); return; }
+    const url = $("e-url").value.trim();
+    const port = Number($("e-port").value) || 4;
+    const doc = {
+      namn, titel: namn, emoji: $("e-emoji").value.trim().slice(0, 4) || "🍽️",
+      portioner: `${port} portioner`, tid: Number($("e-tid").value) || null,
+      ingredienser: rader("e-ing").slice(0, 60), steg: rader("e-steg").slice(0, 40),
+      url: /^https?:\/\//.test(url) ? url : "", kalla: url ? "webben" : "", egen: true,
+      beskrivning: "", skapad: redigerar ? (fam.ratter.find(r => r.id === redigerar) || {}).skapad || Date.now() : Date.now()
+    };
+    $("e-spara").disabled = true;
+    try {
+      await (redigerar ? fam.db.doc(`ratter/${redigerar}`) : fam.db.collection("ratter").doc()).set(doc);
+      rstatus(redigerar ? `${namn} är uppdaterat.` : `${namn} är sparat. Nu kan alla hjärta det.`);
+      $("egen").hidden = true; redigerar = null;
+    } catch (err) { rstatus(dbFel(err), true); }
+    finally { $("e-spara").disabled = false; }
   });
 
   $("addp").addEventListener("submit", async e => {
