@@ -1,0 +1,394 @@
+<title>Veckomeny på budget</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column on phone, form beside results on wide screens; the shopping list is styled as a till receipt. */
+:root{
+  --bg:#f5f7f4; --surface:#ffffff; --ink:#1b2620; --muted:#5d6b63; --line:#dde4de;
+  --accent:#2f7d4f; --accent-ink:#ffffff; --accent-soft:#e3f0e7; --warn:#b4471f; --warn-soft:#fbe9e1; --paper:#fffdf8;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111613; --surface:#18201b; --ink:#e7eee9; --muted:#9aaba1; --line:#2a352e;
+  --accent:#5fbf85; --accent-ink:#0d1a12; --accent-soft:#1d3326; --warn:#f08a62; --warn-soft:#3a2219; --paper:#1d231f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111613; --surface:#18201b; --ink:#e7eee9; --muted:#9aaba1; --line:#2a352e;
+  --accent:#5fbf85; --accent-ink:#0d1a12; --accent-soft:#1d3326; --warn:#f08a62; --warn-soft:#3a2219; --paper:#1d231f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:24px}
+h1{font:700 clamp(1.9rem,4.5vw,2.8rem)/1.05 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+.lede{margin:.4rem 0 0;color:var(--muted);max-width:60ch}
+.stamp{font:500 12px/1.3 var(--mono);color:var(--muted);text-align:right}
+.grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+form{display:flex;flex-direction:column;gap:16px}
+label,.lbl{font-weight:600;font-size:13px;display:block;margin-bottom:6px}
+.hint{font-weight:400;color:var(--muted);font-size:12.5px}
+input[type=number],input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+textarea{min-height:60px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,.chip input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chip span{display:inline-block;padding:6px 11px;border:1px solid var(--line);border-radius:999px;font-size:13px;background:var(--bg);user-select:none}
+.chip input:checked+span{background:var(--accent-soft);border-color:var(--accent);color:var(--ink);font-weight:600}
+.days .chip span{min-width:46px;text-align:center}
+button{font:600 15px var(--body);border-radius:10px;border:0;cursor:pointer;padding:12px 16px}
+.primary{background:var(--accent);color:var(--accent-ink)}
+.primary:disabled{opacity:.6;cursor:progress}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-size:14px;padding:9px 13px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.status{font-size:13.5px;color:var(--muted);min-height:1.2em}
+.status.err{color:var(--warn)}
+.empty{padding:28px 20px;text-align:left}
+.empty h2{font:700 1.35rem var(--display);margin:0 0 8px}
+.empty ol{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.results{display:flex;flex-direction:column;gap:20px;min-width:0}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.stat .v{font:700 1.6rem var(--display);font-variant-numeric:tabular-nums}
+.meter{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.meter.over i{background:var(--warn)}
+.note{padding:10px 12px;border-radius:9px;font-size:14px}
+.note.warn{background:var(--warn-soft);color:var(--ink)}
+.note.ok{background:var(--accent-soft)}
+h2.sec{font:700 1.3rem var(--display);margin:0 0 12px}
+.days-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.day .d{font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.day h3{font:700 1.08rem/1.25 var(--display);margin:4px 0 6px;text-wrap:balance}
+.day p{margin:0 0 8px;color:var(--muted);font-size:14px}
+.day details summary{cursor:pointer;font-size:13.5px;font-weight:600}
+.day ul,.day ol{margin:6px 0 0;padding-left:18px;font-size:14px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:8px}
+.meta span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+.receipt{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px 18px;font:13.5px/1.5 var(--mono);max-width:560px}
+.receipt .head{text-align:center;border-bottom:1px dashed var(--muted);padding-bottom:10px;margin-bottom:8px}
+.receipt .head b{font-size:15px;letter-spacing:.12em}
+.line{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:start;padding:5px 0}
+.line input{margin-top:3px;accent-color:var(--accent)}
+.line .n{min-width:0;overflow-wrap:anywhere}
+.line .n small{display:block;color:var(--muted)}
+.line .n a{color:inherit}
+.line .p{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.line.done .n{text-decoration:line-through;color:var(--muted)}
+.promo{color:var(--accent);font-weight:500}
+.cat{margin-top:10px;font-weight:500;color:var(--muted);text-transform:uppercase;font-size:11.5px;letter-spacing:.1em}
+.total{border-top:1px dashed var(--muted);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-weight:500;font-size:15px}
+.foot{font-size:12.5px;color:var(--muted);margin-top:8px}
+.tips{font-size:14px}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Veckomeny på budget</h1>
+      <p class="lede">Fyll i budget och önskemål. Claude gör en veckomeny av varor som finns på Willys, och inköpslistan räknas ut med Willys egna priser.</p>
+    </div>
+    <div class="stamp" id="stamp"></div>
+  </header>
+
+  <div class="grid">
+    <section class="panel" aria-label="Dina önskemål">
+      <form id="f">
+        <div class="row2">
+          <div><label for="pers">Antal personer</label><input id="pers" type="number" min="1" max="10" value="2"></div>
+          <div><label for="budget">Budget per vecka</label><input id="budget" type="number" min="100" step="50" value="600"><span class="hint">kronor</span></div>
+        </div>
+        <div>
+          <span class="lbl">Dagar jag lagar mat</span>
+          <div class="chips days" id="days"></div>
+        </div>
+        <div>
+          <span class="lbl">Kost</span>
+          <div class="chips" id="kost"></div>
+        </div>
+        <div>
+          <span class="lbl">Det här har jag i köket</span>
+          <div class="chips" id="utr"></div>
+        </div>
+        <div>
+          <label for="pref">Önskemål <span class="hint">t.ex. mindre socker, mycket grönt, snabbt på vardagar</span></label>
+          <textarea id="pref">Nyttigt och mindre socker. Max 30 minuter på vardagar.</textarea>
+        </div>
+        <div>
+          <label for="ogillar">Det här vill jag inte ha</label>
+          <input id="ogillar" type="text" value="gurka, kapris">
+        </div>
+        <div>
+          <span class="lbl">Mer</span>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" id="bas" checked><span>Jag har salt, peppar och olja hemma</span></label>
+            <label class="chip"><input type="checkbox" id="lunch"><span>Räkna med matlåda till lunch</span></label>
+          </div>
+        </div>
+        <div class="btnrow">
+          <button class="primary" id="go" type="submit">Skapa veckomeny</button>
+          <button class="ghost" id="stop" type="button" hidden>Avbryt</button>
+        </div>
+        <div class="status" id="status" role="status"></div>
+      </form>
+    </section>
+
+    <section class="results" id="out" aria-live="polite">
+      <div class="panel empty" id="empty">
+        <h2>Här kommer din vecka</h2>
+        <p>När du trycker på <b>Skapa veckomeny</b> får du:</p>
+        <ol>
+          <li>en rätt för varje dag du lagar mat, med recept,</li>
+          <li>en inköpslista med Willys varor, priser och kampanjer,</li>
+          <li>totalsumman jämförd med din budget.</li>
+        </ol>
+        <p class="foot">Det tar oftast en till två minuter. Första gången frågar sidan om den får använda Claude.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script type="application/json" id="katalog">__KATALOG__</script>
+<script>
+(() => {
+  const K = JSON.parse(document.getElementById("katalog").textContent);
+  const byKod = new Map(K.varor.map(v => [v.kod.split("_")[0], v]));
+  const $ = id => document.getElementById(id);
+  const kr = n => n.toLocaleString("sv-SE", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " kr";
+  $("stamp").textContent = `Willys priser hämtade ${K.hamtad}\n${K.antal} varor`;
+  $("stamp").style.whiteSpace = "pre-line";
+
+  const DAGAR = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"];
+  const KOST = ["Glutenfritt","Laktosfritt","Vegetariskt","Veganskt","Fläskfritt","Fiskfritt","Nötfritt"];
+  const UTR = ["Spis","Ugn","Airfryer","Mikro","Långkokare","Mixer"];
+  const chip = (wrap, name, label, checked) => {
+    const l = document.createElement("label"); l.className = "chip";
+    l.innerHTML = `<input type="checkbox" name="${name}" id="${name}-${label}"><span></span>`;
+    l.querySelector("span").textContent = label;
+    l.querySelector("input").checked = checked; l.querySelector("input").value = label;
+    wrap.append(l);
+  };
+  DAGAR.forEach(d => chip($("days"), "dag", d.slice(0,3), !["Fredag","Lördag"].includes(d)));
+  KOST.forEach(k => chip($("kost"), "kost", k, false));
+  UTR.forEach(u => chip($("utr"), "utr", u, ["Spis","Ugn"].includes(u)));
+
+  const store = {
+    get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+    set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+  const fields = ["pers","budget","pref","ogillar"];
+  const readForm = () => ({
+    pers: +$("pers").value || 2, budget: +$("budget").value || 600,
+    pref: $("pref").value.trim(), ogillar: $("ogillar").value.trim(),
+    dagar: [...document.querySelectorAll('input[name=dag]:checked')].map(i => DAGAR.find(d => d.startsWith(i.value))),
+    kost: [...document.querySelectorAll('input[name=kost]:checked')].map(i => i.value),
+    utr: [...document.querySelectorAll('input[name=utr]:checked')].map(i => i.value),
+    bas: $("bas").checked, lunch: $("lunch").checked
+  });
+  const saved = store.get("vmb-form");
+  if (saved) {
+    fields.forEach(k => { if (saved[k] != null) $(k).value = saved[k]; });
+    $("bas").checked = !!saved.bas; $("lunch").checked = !!saved.lunch;
+    document.querySelectorAll('input[name=dag]').forEach(i => i.checked = saved.dagar.some(d => d.startsWith(i.value)));
+    document.querySelectorAll('input[name=kost]').forEach(i => i.checked = saved.kost.includes(i.value));
+    document.querySelectorAll('input[name=utr]').forEach(i => i.checked = saved.utr.includes(i.value));
+  }
+  $("f").addEventListener("change", () => store.set("vmb-form", readForm()));
+
+  // Katalogen som text till Claude: kod|namn|märke, storlek|pris|kampanj, grupperad per sökord
+  const katalogText = (() => {
+    const grupper = {};
+    for (const v of K.varor) (grupper[v.kategori] ||= []).push(v);
+    return Object.entries(grupper).map(([g, vs]) => `# ${g}\n` + vs.map(v =>
+      `${v.kod.split("_")[0]}|${v.namn}|${v.info}|${v.pris} ${v.enhet}${v.eko ? "|eko" : ""}${v.kampanj ? `|KAMPANJ ${v.kampanj.text} (${v.kampanj.styckpris} kr/st vid ${v.kampanj.minAntal} st)` : ""}`
+    ).join("\n")).join("\n");
+  })();
+
+  const buildPrompt = (o, feedback) => `Du är en svensk matplanerare. Gör en veckomeny och inköpslista med ENDAST varor från Willys-katalogen nedan.
+
+HUSHÅLL
+- Personer: ${o.pers}
+- Budget för hela inköpslistan: högst ${o.budget} kr
+- Laga middag dessa dagar: ${o.dagar.join(", ") || "alla dagar"}
+- Kost: ${o.kost.join(", ") || "inga särskilda krav"}
+- Köksutrustning: ${o.utr.join(", ") || "spis"}
+- Önskemål: ${o.pref || "inga"}
+- Vill inte ha: ${o.ogillar || "inget"}
+- ${o.bas ? "Salt, peppar och matolja finns hemma – köp inte dem." : "Inga basvaror finns hemma."}
+- ${o.lunch ? "Laga dubbla portioner så att det räcker till matlåda dagen efter." : "Bara middag."}
+${feedback ? `\nVIKTIGT FRÅN FÖRRA FÖRSÖKET: ${feedback}\n` : ""}
+REGLER
+- Välj bara varor ur katalogen och ange deras kod exakt. Hitta inte på varor eller priser.
+- Kost-kraven är absoluta (t.ex. glutenfritt: välj uttryckligen glutenfria varianter av pasta, bröd, mjöl, soja och liknande).
+- Återanvänd ingredienser mellan dagarna så att lite blir över och budgeten räcker. Utnyttja kampanjer när det passar.
+- Mängden ska räcka till recepten för ${o.pers} personer. "antal" är antal förpackningar (eller kilo för varor med pris per kg).
+- Använd bara den utrustning som finns.
+- Håll totalen under budgeten. Räkna noga själv innan du svarar.
+
+SVARA MED ENDAST JSON i exakt detta format:
+{"dagar":[{"dag":"Måndag","ratt":"Rättens namn","beskrivning":"En mening","tid":25,"utrustning":"Airfryer","ingredienser":["300 g kycklingfilé", "..."],"steg":["...","..."]}],
+ "inkop":[{"kod":"101240187","antal":1,"till":"Måndag, Torsdag"}],
+ "tips":"1–2 meningar om hur man använder rester eller sparar pengar"}
+
+WILLYS-KATALOG (kod|namn|märke, storlek|pris)
+${katalogText}`;
+
+  const radPris = (v, antal) => {
+    const p = v.kampanj;
+    if (p && antal >= p.minAntal) return p.styckpris * antal;
+    return v.pris * antal;
+  };
+
+  let ctl = null, last = store.get("vmb-plan");
+  const status = (t, err) => { $("status").textContent = t; $("status").className = "status" + (err ? " err" : ""); };
+
+  function render(plan) {
+    const o = plan.form;
+    const rader = [], okanda = [];
+    for (const r of plan.inkop || []) {
+      const v = byKod.get(String(r.kod).split("_")[0]);
+      const antal = Math.max(0.1, Number(r.antal) || 1);
+      if (!v) { okanda.push(r.kod); continue; }
+      rader.push({v, antal, till: r.till || "", summa: radPris(v, antal)});
+    }
+    const total = rader.reduce((s, r) => s + r.summa, 0);
+    plan.total = total;
+    const over = total > o.budget;
+    const checked = store.get("vmb-check") || {};
+
+    const out = $("out"); out.innerHTML = "";
+    const sum = document.createElement("div"); sum.className = "panel";
+    sum.innerHTML = `<div class="summary">
+        <div class="stat"><div class="k">Totalt</div><div class="v"></div></div>
+        <div class="stat"><div class="k">Budget</div><div class="v"></div></div>
+        <div class="stat"><div class="k">Per portion</div><div class="v"></div></div>
+      </div><div class="meter"><i></i></div>`;
+    const vs = sum.querySelectorAll(".v");
+    vs[0].textContent = kr(total); vs[1].textContent = kr(o.budget);
+    const portioner = Math.max(1, (plan.dagar || []).length * o.pers * (o.lunch ? 2 : 1));
+    vs[2].textContent = kr(total / portioner);
+    sum.querySelector(".meter i").style.width = Math.min(100, total / o.budget * 100) + "%";
+    if (over) sum.querySelector(".meter").classList.add("over");
+    const note = document.createElement("div");
+    note.className = "note " + (over ? "warn" : "ok");
+    note.style.marginTop = "12px";
+    note.textContent = over
+      ? `Listan blir ${kr(total - o.budget)} dyrare än budgeten. Tryck på "Gör billigare" så försöker Claude igen.`
+      : `Du håller budgeten med ${kr(o.budget - total)} till godo.`;
+    sum.append(note);
+    if (okanda.length) {
+      const n2 = document.createElement("div"); n2.className = "note warn"; n2.style.marginTop = "8px";
+      n2.textContent = `${okanda.length} vara/varor fanns inte i katalogen och räknas inte med.`;
+      sum.append(n2);
+    }
+    const br = document.createElement("div"); br.className = "btnrow"; br.style.marginTop = "12px";
+    const cheaper = document.createElement("button"); cheaper.className = "ghost"; cheaper.type = "button";
+    cheaper.textContent = "Gör billigare";
+    cheaper.onclick = () => run(`Förra listan kostade ${total.toFixed(0)} kr enligt Willys priser, budgeten är ${o.budget} kr. Välj billigare varor (t.ex. Garant, kampanjer, säsongens grönsaker) och färre olika ingredienser.`);
+    const again = document.createElement("button"); again.className = "ghost"; again.type = "button";
+    again.textContent = "Ny meny";
+    again.onclick = () => run("Gör helt andra rätter än förra gången: " + (plan.dagar || []).map(d => d.ratt).join(", ") + ".");
+    br.append(cheaper, again); sum.append(br);
+    out.append(sum);
+
+    const dsec = document.createElement("section");
+    dsec.innerHTML = `<h2 class="sec">Veckans middagar</h2><div class="days-list"></div>`;
+    for (const d of plan.dagar || []) {
+      const c = document.createElement("article"); c.className = "day";
+      c.innerHTML = `<div class="d"></div><h3></h3><div class="meta"></div><p></p>
+        <details><summary>Ingredienser och gör så här</summary><ul></ul><ol></ol></details>`;
+      c.querySelector(".d").textContent = d.dag || "";
+      c.querySelector("h3").textContent = d.ratt || "";
+      c.querySelector("p").textContent = d.beskrivning || "";
+      const meta = c.querySelector(".meta");
+      if (d.tid) { const s = document.createElement("span"); s.textContent = `${d.tid} min`; meta.append(s); }
+      if (d.utrustning) { const s = document.createElement("span"); s.textContent = d.utrustning; meta.append(s); }
+      for (const i of d.ingredienser || []) { const li = document.createElement("li"); li.textContent = i; c.querySelector("ul").append(li); }
+      for (const s of d.steg || []) { const li = document.createElement("li"); li.textContent = s; c.querySelector("ol").append(li); }
+      dsec.querySelector(".days-list").append(c);
+    }
+    out.append(dsec);
+
+    const rsec = document.createElement("section");
+    rsec.innerHTML = `<h2 class="sec">Inköpslista</h2><div class="receipt"><div class="head"><b>INKÖPSLISTA</b><br>${o.pers} pers · ${(plan.dagar||[]).length} middagar</div><div class="lines"></div><div class="total"><span>SUMMA</span><span></span></div><div class="foot"></div></div>`;
+    const lines = rsec.querySelector(".lines");
+    const grupper = {};
+    for (const r of rader) (grupper[r.v.kategori] ||= []).push(r);
+    for (const [g, rs] of Object.entries(grupper)) {
+      const h = document.createElement("div"); h.className = "cat"; h.textContent = g; lines.append(h);
+      for (const r of rs) {
+        const id = "c" + r.v.kod;
+        const el = document.createElement("div"); el.className = "line" + (checked[id] ? " done" : "");
+        el.innerHTML = `<input type="checkbox" id="${id}"><label class="n" for="${id}"><a target="_blank" rel="noopener"></a><small></small></label><span class="p"></span>`;
+        const a = el.querySelector("a");
+        a.textContent = `${r.antal} × ${r.v.namn}`;
+        a.href = "https://www.willys.se/sok?q=" + encodeURIComponent(r.v.namn + " " + r.v.info.split(",")[0]);
+        const usePromo = r.v.kampanj && r.antal >= r.v.kampanj.minAntal;
+        el.querySelector("small").textContent = `${r.v.info} · ${r.v.pris} ${r.v.enhet}` + (r.till ? ` · ${r.till}` : "");
+        if (r.v.kampanj) {
+          const s = document.createElement("span"); s.className = "promo";
+          s.textContent = usePromo ? ` · ${r.v.kampanj.text} ✓` : ` · ${r.v.kampanj.text}`;
+          el.querySelector("small").append(s);
+        }
+        el.querySelector(".p").textContent = kr(r.summa);
+        const cb = el.querySelector("input"); cb.checked = !!checked[id];
+        cb.onchange = () => { checked[id] = cb.checked; el.classList.toggle("done", cb.checked); store.set("vmb-check", checked); };
+        lines.append(el);
+      }
+    }
+    rsec.querySelector(".total span:last-child").textContent = kr(total);
+    rsec.querySelector(".foot").textContent = `Priser från willys.se ${K.hamtad}. Butikspriser och kampanjer kan skilja sig. Tryck på en vara för att söka efter den hos Willys.`;
+    out.append(rsec);
+
+    if (plan.tips) {
+      const t = document.createElement("div"); t.className = "panel tips";
+      t.innerHTML = "<b>Tips</b><p style=\"margin:.3em 0 0\"></p>";
+      t.querySelector("p").textContent = plan.tips; out.append(t);
+    }
+  }
+
+  const ERR = {
+    not_granted: "Sidan fick inte använda Claude. Tillåt det i sidans behörigheter och försök igen.",
+    sampling_disabled: "Claude är inte tillgängligt för det här kontot.",
+    rate_limited: "Du har gjort många förfrågningar. Vänta en stund och försök igen.",
+    invalid_json: "Svaret gick inte att läsa. Tryck på Skapa veckomeny igen.",
+    session_expired: "Du behöver logga in på nytt.",
+    refused: "Claude kunde inte göra den här menyn. Ändra önskemålen och försök igen."
+  };
+
+  async function run(feedback) {
+    const sample = await claude.use("sample");
+    if (!sample) { status("Den här sidan behöver öppnas i Claude för att kunna skapa menyer.", true); return; }
+    const o = readForm();
+    if (!o.dagar.length) { status("Välj minst en dag.", true); return; }
+    store.set("vmb-form", o);
+    ctl = new AbortController();
+    $("go").disabled = true; $("stop").hidden = false;
+    status("Claude planerar veckan och väljer varor från Willys… (1–2 minuter)");
+    try {
+      const plan = await sample.json(buildPrompt(o, feedback), { signal: ctl.signal, cache: false });
+      if (!plan || !Array.isArray(plan.dagar) || !Array.isArray(plan.inkop)) throw {code: "invalid_json"};
+      plan.form = o;
+      store.set("vmb-plan", plan); store.set("vmb-check", {});
+      render(plan);
+      status("Klart! Bocka av varorna när du handlar.");
+      $("out").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+    } catch (e) {
+      if (e && e.code === "cancelled") status("Avbrutet.");
+      else status(ERR[e && e.code] || "Något gick fel. Försök igen om en stund.", true);
+    } finally {
+      $("go").disabled = false; $("stop").hidden = true;
+    }
+  }
+
+  $("f").addEventListener("submit", e => { e.preventDefault(); run(); });
+  $("stop").onclick = () => ctl && ctl.abort();
+  if (last && last.form) render(last);
+})();
+</script>
